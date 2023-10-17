@@ -2,7 +2,7 @@ package db
 
 import (
 	"time"
-  lib "ktgolib"
+  lib "github.com/ttoonn112/ktgolib"
 	"github.com/ziutek/mymysql/mysql"			// Mysql
 	_ "github.com/ziutek/mymysql/native" 	// Mysql Native engine
 )
