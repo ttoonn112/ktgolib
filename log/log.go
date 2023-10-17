@@ -1,4 +1,4 @@
-package ktgolib
+package log
 
 import (
   "fmt"

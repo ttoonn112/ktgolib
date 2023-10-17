@@ -2,7 +2,7 @@ package db
 
 import (
 	"time"
-  lib "github.com/ttoonn112/ktgolib"
+  log "../log"
 	"github.com/ziutek/mymysql/mysql"			// Mysql
 	_ "github.com/ziutek/mymysql/native" 	// Mysql Native engine
 )
@@ -25,7 +25,7 @@ func Open(conn_name string) mysql.Conn{
 	db.Register("set names utf8")
 	err := db.Connect()
 	if err != nil {
-    lib.Log("db.Open", conn_name, err.Error(), "", "SQL")
+    log.Log("db.Open", conn_name, err.Error(), "", "SQL")
     panic("error.db_connection_failed")
   }
 	return db
@@ -36,7 +36,7 @@ func Close(conn_name string, db mysql.Conn) {
 		 err := db.Close()
 		 db = nil
 		 if err != nil {
-       lib.Log("db.Close", conn_name, err.Error(), "", "SQL")
+       log.Log("db.Close", conn_name, err.Error(), "", "SQL")
      }
 	}
 }
@@ -48,7 +48,7 @@ func Execute(conn_name string, sql string) bool{
 	}()
 	_, _, err := db.Query(sql)
 	if err != nil {
-    lib.Log("db.Execute", conn_name, err.Error(), sql, "SQL")
+    log.Log("db.Execute", conn_name, err.Error(), sql, "SQL")
     panic(err.Error())
   }
 	return false
@@ -64,7 +64,7 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 
 	rows, res, err := db.Query(sql)
 	if err != nil {
-    lib.Log("db.Query", conn_name, err.Error(), sql, "SQL")
+    log.Log("db.Query", conn_name, err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
@@ -96,7 +96,7 @@ func OpenTrans(conn_name string) (Transaction){
 	conn := Open(conn_name)
 	tr, err := conn.Begin()
 	if err != nil {
-    lib.Log("db.OpenTrans", conn_name, err.Error(), "", "SQL")
+    log.Log("db.OpenTrans", conn_name, err.Error(), "", "SQL")
     panic(err.Error())
   }
 	return Transaction{conn:conn, tr:tr}
@@ -107,7 +107,7 @@ func (trans *Transaction) Close() {
 		 err := trans.conn.Close()
 		 trans = nil
 		 if err != nil {
-       lib.Log("trans.Close", "", err.Error(), "", "SQL")
+       log.Log("trans.Close", "", err.Error(), "", "SQL")
      }
 	}
 }
@@ -119,7 +119,7 @@ func (trans *Transaction) SetTimeout(timeout time.Duration) {
 func (trans *Transaction) Commit(){
 	err := trans.tr.Commit()
   if err != nil {
-    lib.Log("trans.Commit", "", err.Error(), "", "SQL")
+    log.Log("trans.Commit", "", err.Error(), "", "SQL")
     panic(err.Error())
   }
 }
@@ -127,7 +127,7 @@ func (trans *Transaction) Commit(){
 func (trans *Transaction) Rollback(){
 	err := trans.tr.Rollback()
   if err != nil {
-    lib.Log("trans.Rollback", "", err.Error(), "", "SQL")
+    log.Log("trans.Rollback", "", err.Error(), "", "SQL")
     panic(err.Error())
   }
 }
@@ -135,7 +135,7 @@ func (trans *Transaction) Rollback(){
 func (trans *Transaction) Execute(sql string) {
 	_, err := trans.tr.Start(sql)
   if err != nil {
-    lib.Log("trans.Execute", "", err.Error(), sql, "SQL")
+    log.Log("trans.Execute", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 }
@@ -144,13 +144,13 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 
 	sel, err := trans.conn.Prepare(sql)
   if err != nil {
-    lib.Log("trans.Query", "", err.Error(), sql, "SQL")
+    log.Log("trans.Query", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
 	rows, res, err := trans.tr.Do(sel).Exec()
   if err != nil {
-    lib.Log("trans.Query", "", err.Error(), sql, "SQL")
+    log.Log("trans.Query", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
