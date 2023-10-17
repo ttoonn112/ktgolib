@@ -1,4 +1,4 @@
-module ktgolib
+module github.com/ttoonn112/ktgolib
 
 go 1.19
 
