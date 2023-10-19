@@ -2,7 +2,6 @@ package db
 
 import (
 	"time"
-  log "../log"
 	"github.com/ziutek/mymysql/mysql"			// Mysql
 	_ "github.com/ziutek/mymysql/native" 	// Mysql Native engine
 )
@@ -25,7 +24,7 @@ func Open(conn_name string) mysql.Conn{
 	db.Register("set names utf8")
 	err := db.Connect()
 	if err != nil {
-    log.Log("db.Open", conn_name, err.Error(), "", "SQL")
+    LogHidden("db.Open", conn_name, err.Error(), "", "SQL")
     panic("error.db_connection_failed")
   }
 	return db
@@ -36,7 +35,7 @@ func Close(conn_name string, db mysql.Conn) {
 		 err := db.Close()
 		 db = nil
 		 if err != nil {
-       log.Log("db.Close", conn_name, err.Error(), "", "SQL")
+       LogHidden("db.Close", conn_name, err.Error(), "", "SQL")
      }
 	}
 }
@@ -48,7 +47,7 @@ func Execute(conn_name string, sql string) bool{
 	}()
 	_, _, err := db.Query(sql)
 	if err != nil {
-    log.Log("db.Execute", conn_name, err.Error(), sql, "SQL")
+    LogHidden("db.Execute", conn_name, err.Error(), sql, "SQL")
     panic(err.Error())
   }
 	return false
@@ -64,7 +63,7 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 
 	rows, res, err := db.Query(sql)
 	if err != nil {
-    log.Log("db.Query", conn_name, err.Error(), sql, "SQL")
+    LogHidden("db.Query", conn_name, err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
@@ -96,7 +95,7 @@ func OpenTrans(conn_name string) (Transaction){
 	conn := Open(conn_name)
 	tr, err := conn.Begin()
 	if err != nil {
-    log.Log("db.OpenTrans", conn_name, err.Error(), "", "SQL")
+    LogHidden("db.OpenTrans", conn_name, err.Error(), "", "SQL")
     panic(err.Error())
   }
 	return Transaction{conn:conn, tr:tr}
@@ -107,7 +106,7 @@ func (trans *Transaction) Close() {
 		 err := trans.conn.Close()
 		 trans = nil
 		 if err != nil {
-       log.Log("trans.Close", "", err.Error(), "", "SQL")
+       LogHidden("trans.Close", "", err.Error(), "", "SQL")
      }
 	}
 }
@@ -119,7 +118,7 @@ func (trans *Transaction) SetTimeout(timeout time.Duration) {
 func (trans *Transaction) Commit(){
 	err := trans.tr.Commit()
   if err != nil {
-    log.Log("trans.Commit", "", err.Error(), "", "SQL")
+    LogHidden("trans.Commit", "", err.Error(), "", "SQL")
     panic(err.Error())
   }
 }
@@ -127,7 +126,7 @@ func (trans *Transaction) Commit(){
 func (trans *Transaction) Rollback(){
 	err := trans.tr.Rollback()
   if err != nil {
-    log.Log("trans.Rollback", "", err.Error(), "", "SQL")
+    LogHidden("trans.Rollback", "", err.Error(), "", "SQL")
     panic(err.Error())
   }
 }
@@ -135,7 +134,7 @@ func (trans *Transaction) Rollback(){
 func (trans *Transaction) Execute(sql string) {
 	_, err := trans.tr.Start(sql)
   if err != nil {
-    log.Log("trans.Execute", "", err.Error(), sql, "SQL")
+    LogHidden("trans.Execute", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 }
@@ -144,13 +143,13 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 
 	sel, err := trans.conn.Prepare(sql)
   if err != nil {
-    log.Log("trans.Query", "", err.Error(), sql, "SQL")
+    LogHidden("trans.Query", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
 	rows, res, err := trans.tr.Do(sel).Exec()
   if err != nil {
-    log.Log("trans.Query", "", err.Error(), sql, "SQL")
+    LogHidden("trans.Query", "", err.Error(), sql, "SQL")
     panic(err.Error())
   }
 
@@ -177,4 +176,31 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	}
 
 	return records
+}
+
+func writeLog(operation string, username string, key string, msg string, duration string, logfilename string, showDisplay bool){
+	t := time.Now()
+
+  if _, err := os.Stat("logs/"); os.IsNotExist(err) {
+	   os.Mkdir("logs/", os.ModePerm)
+	}
+
+	logdatepath := "logs/"+t.Format("060102")
+	if _, err := os.Stat(logdatepath); os.IsNotExist(err) {
+	    os.Mkdir(logdatepath, os.ModePerm)
+	}
+
+	file, err := os.OpenFile(logdatepath+"/"+logfilename+".txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+  if err != nil {
+    //log.Fatal("Cannot create file", err)
+  }
+  defer file.Close()
+	if showDisplay {
+		fmt.Print("Log|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
+	}
+  fmt.Fprintf(file, "t="+t.Format("15:04:05.000")+"|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
+}
+
+func LogHidden(operation string, username string, key string, msg string, logfilename string){
+	writeLog(operation, username, key, msg, "", logfilename, false)
 }
