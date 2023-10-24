@@ -1,7 +1,11 @@
 package ktgolib
 
 import (
+  "time"
+  "strings"
   "strconv"
+  "regexp"
+	"math/rand"
 )
 
 func MapVStr(m map[string]interface{}, k string, default_value interface{}) string {
@@ -90,11 +94,37 @@ func SI64(m map[string]interface{}, k string) int64 {
 	return S_I64(MapVStr(m, k, ""))
 }
 
-// Optional chainning
-func OC(condition bool, a string, b string) string {
-  if condition {
-    return a
-  }else{
-    return b
-  }
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@!*.+_-"
+func GenerateRandomString(n int) string {		//RandASCIIBytes
+	var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[seededRand.Intn(len(letterBytes))]
+	}
+	return string(b)
+}
+
+const letterNumBytes = "0123456789"
+func GenerateRandomNumberString(n int) string {
+	var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterNumBytes[seededRand.Intn(len(letterNumBytes))]
+	}
+	return string(b)
+}
+
+func DoLetterOnly(str_ string) string{
+	reg, err := regexp.Compile("[^a-zA-Z0-9]$@!*.+_-")
+  if err != nil {return str_}
+	return reg.ReplaceAllString(str_, "")
+}
+
+func IsLetterOnly(s string) bool {
+   for _, char := range s {
+      if !strings.Contains(letterBytes, string(char)) {
+         return false
+      }
+   }
+   return true
 }
