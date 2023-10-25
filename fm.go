@@ -94,6 +94,15 @@ func SI64(m map[string]interface{}, k string) int64 {
 	return S_I64(MapVStr(m, k, ""))
 }
 
+func ZeroString(value int64, numberOfZero int) string {
+	padStr := ""
+	for k:=0;k<numberOfZero; k++ {
+		padStr += "0"
+	}
+	thestr := padStr+I64_S(value)
+  return thestr[len(thestr) - numberOfZero:]
+}
+
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@!*.+_-"
 func GenerateRandomString(n int) string {		//RandASCIIBytes
 	var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
