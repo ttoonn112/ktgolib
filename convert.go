@@ -97,3 +97,11 @@ func ArrayOfMapToString(payload []map[string]interface{}) string{
   }
   return fieldValue
 }
+
+func ListToMap(records []map[string]interface{}, unique_code string) map[string]map[string]interface{} {
+	objs := map[string]map[string]interface{}{}
+	for _, record := range records {
+		objs[T(record,unique_code)] = record
+	}
+	return objs
+}
