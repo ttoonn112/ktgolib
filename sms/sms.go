@@ -6,7 +6,7 @@ import (
   "io/ioutil"
 )
 
-func SendOTP_MKT(api_key string, secret_key string, project_key string, phone string) (string, boolean) {
+func SendOTP_MKT(api_key string, secret_key string, project_key string, phone string) (string, bool) {
   url := "https://portal-otp.smsmkt.com/api/otp-send"
   method := "POST"
   payload := strings.NewReader(`{
@@ -34,7 +34,7 @@ func SendOTP_MKT(api_key string, secret_key string, project_key string, phone st
   return string(body), true
 }
 
-func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string) (string, boolean) {
+func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string) (string, bool) {
   url := "https://portal-otp.smsmkt.com/api/otp-validate"
   method := "POST"
   payload := strings.NewReader(`{
