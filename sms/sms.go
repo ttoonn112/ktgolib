@@ -4,9 +4,22 @@ import (
   "strings"
   "net/http"
   "io/ioutil"
+  "encoding/json"
 )
 
-func SendOTP_MKT(api_key string, secret_key string, project_key string, phone string) (string, bool) {
+func SendOTP_MKT(api_key string, secret_key string, project_key string, phone string) (result string, ok bool) {
+
+  defer func() {
+		if r := recover(); r != nil {
+      ok = false
+   		if err,ok := r.(error); ok {
+   			result = err.Error()
+   		}else if errS,ok := r.(string); ok {
+   			result = errS
+   		}
+		}
+	}()
+
   url := "https://portal-otp.smsmkt.com/api/otp-send"
   method := "POST"
   payload := strings.NewReader(`{
@@ -26,15 +39,42 @@ func SendOTP_MKT(api_key string, secret_key string, project_key string, phone st
     return err.Error(), false
   }
   defer res.Body.Close()
+
+  if res.Status != "200 OK" {
+    return res.Status, false
+  }
+
   body, err := ioutil.ReadAll(res.Body)
   if err != nil {
       return err.Error(), false
   }
 
-  return string(body), true
+  var obj map[string]interface{}
+  if err := json.Unmarshal([]byte(string(body)), &obj); err != nil {
+    return err.Error(), false
+  }
+
+  if result,ok := obj["result"].(map[string]interface{}); ok && result != nil {
+    return result["token"].(string), true
+  }else{
+    return obj["code"].(string)+" - "+obj["detail"].(string), false
+  }
+
 }
 
-func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string) (string, bool) {
+func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string) (result string, ok bool) {
+
+  defer func() {
+		if r := recover(); r != nil {
+      ok = false
+   		if err,ok := r.(error); ok {
+   			result = err.Error()
+   		}else if errS,ok := r.(string); ok {
+   			result = errS
+   		}
+		}
+	}()
+
   url := "https://portal-otp.smsmkt.com/api/otp-validate"
   method := "POST"
   payload := strings.NewReader(`{
@@ -54,10 +94,29 @@ func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string
       return err.Error(), false
   }
   defer res.Body.Close()
+
+  if res.Status != "200 OK" {
+    return res.Status, false
+  }
+
   body, err := ioutil.ReadAll(res.Body)
   if err != nil {
       return err.Error(), false
   }
 
-  return string(body), true
+  var obj map[string]interface{}
+  if err := json.Unmarshal([]byte(string(body)), &obj); err != nil {
+    return err.Error(), false
+  }
+
+  if result,ok := obj["result"].(map[string]interface{}); ok && result != nil {
+    if result["status"].(bool) {
+      return "", true
+    }else{
+      return obj["code"].(string)+" - "+obj["detail"].(string)+" => invalid code", false
+    }
+  }else{
+    return obj["code"].(string)+" - "+obj["detail"].(string), false
+  }
+
 }
