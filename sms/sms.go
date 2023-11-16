@@ -45,7 +45,6 @@ func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string
   req, err := http.NewRequest(method, url, payload)
   if err != nil {
       return err.Error(), false
-      return
   }
   req.Header.Add("Content-Type", "application/json")
   req.Header.Add("api_key", api_key)
@@ -53,13 +52,11 @@ func ValidateOTP_MKT(api_key string, secret_key string, token string, otp string
   res, err := client.Do(req)
   if err != nil {
       return err.Error(), false
-      return
   }
   defer res.Body.Close()
   body, err := ioutil.ReadAll(res.Body)
   if err != nil {
       return err.Error(), false
-      return
   }
 
   return string(body), true
