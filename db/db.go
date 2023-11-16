@@ -27,7 +27,7 @@ func Open(conn_name string) mysql.Conn{
 	err := db.Connect()
 	if err != nil {
     LogHidden("db.Open", conn_name, err.Error(), "", "SQL")
-    panic("error.db_connection_failed")
+    panic("error.DBOperationFailed")
   }
 	return db
 }
@@ -38,6 +38,7 @@ func Close(conn_name string, db mysql.Conn) {
 		 db = nil
 		 if err != nil {
        LogHidden("db.Close", conn_name, err.Error(), "", "SQL")
+			 panic("error.DBOperationFailed")
      }
 	}
 }
@@ -50,7 +51,7 @@ func Execute(conn_name string, sql string) bool{
 	_, _, err := db.Query(sql)
 	if err != nil {
     LogHidden("db.Execute", conn_name, err.Error(), sql, "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 	return false
 }
@@ -66,7 +67,7 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 	rows, res, err := db.Query(sql)
 	if err != nil {
     LogHidden("db.Query", conn_name, err.Error(), sql, "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 
 	for _, row := range rows {
@@ -98,7 +99,7 @@ func OpenTrans(conn_name string) (Transaction){
 	tr, err := conn.Begin()
 	if err != nil {
     LogHidden("db.OpenTrans", conn_name, err.Error(), "", "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 	return Transaction{conn:conn, tr:tr}
 }
@@ -121,7 +122,7 @@ func (trans *Transaction) Commit(){
 	err := trans.tr.Commit()
   if err != nil {
     LogHidden("trans.Commit", "", err.Error(), "", "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 }
 
@@ -129,7 +130,7 @@ func (trans *Transaction) Rollback(){
 	err := trans.tr.Rollback()
   if err != nil {
     LogHidden("trans.Rollback", "", err.Error(), "", "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 }
 
@@ -137,7 +138,7 @@ func (trans *Transaction) Execute(sql string) {
 	_, err := trans.tr.Start(sql)
   if err != nil {
     LogHidden("trans.Execute", "", err.Error(), sql, "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 }
 
@@ -146,13 +147,13 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	sel, err := trans.conn.Prepare(sql)
   if err != nil {
     LogHidden("trans.Query", "", err.Error(), sql, "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 
 	rows, res, err := trans.tr.Do(sel).Exec()
   if err != nil {
     LogHidden("trans.Query", "", err.Error(), sql, "SQL")
-    panic(err.Error())
+    panic("error.DBOperationFailed")
   }
 
   records := []map[string]interface{}{}
@@ -198,7 +199,7 @@ func writeLog(operation string, username string, key string, msg string, duratio
   }
   defer file.Close()
 	if showDisplay {
-		fmt.Print("Log|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
+		fmt.Print("Log|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"] => "+logfilename+"\r\n")
 	}
   fmt.Fprintf(file, "t="+t.Format("15:04:05.000")+"|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
 }
