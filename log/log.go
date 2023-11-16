@@ -25,7 +25,7 @@ func writeLog(operation string, username string, key string, msg string, duratio
   }
   defer file.Close()
 	if showDisplay {
-		fmt.Print(logfilename+"|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
+		fmt.Print("Log|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"] => "+logfilename+"\r\n")
 	}
   fmt.Fprintf(file, "t="+t.Format("15:04:05.000")+"|o="+operation+"|u="+username+"|k="+key+"|d="+duration+"|m=["+msg+"]\r\n")
 }
