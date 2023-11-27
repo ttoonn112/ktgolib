@@ -4,7 +4,7 @@ package ktgolib
 // ใช้งานเพื่อให้ Code สั้นลง
 
 import (
-	
+	"strings"
 )
 
 // Check ว่ามี key อยู่ m หรือไม่
@@ -16,12 +16,21 @@ func Has(m map[string]interface{}, key string) bool {
 // ดึงข้อมูลจาก mapData เฉพาะ key ที่อยู่ใน keyArr
 func GetMask(mapData map[string]interface{}, keyArr []string) map[string]interface{} {
   result := map[string]interface{}{}
-	for k1, v := range mapData {
-    for _, k2 := range keyArr {
-      if k1 == k2 {
-        result[k1] = v
-      }
-    }
+	for _, k := range keyArr {
+		if strings.HasSuffix(k, "_") {
+			info := map[string]interface{}{}
+			for km, v := range mapData {
+				if strings.HasPrefix(km, k) {
+					key := strings.TrimPrefix(km, k)
+					info[key] = v
+				}
+			}
+			result[strings.TrimSuffix(k, "_")] = info
+		}else{
+			if v, ok := mapData[k]; ok {
+				result[k] = v
+			}
+		}
   }
 	return result
 }
