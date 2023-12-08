@@ -1,6 +1,7 @@
 package ktgolib
 
 import (
+  "math"
   "time"
   "strings"
   "strconv"
