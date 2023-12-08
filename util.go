@@ -58,3 +58,17 @@ func LastXChar(str string, num int) string{
 	}
 	return ""
 }
+
+func TryCatch(callback func(errStr string)) {
+    if r := recover(); r != nil {
+        errStr := ""
+        if err, ok := r.(error); ok {
+            errStr = err.Error()
+        } else if errS, ok := r.(string); ok {
+            errStr = errS
+        }
+        if callback != nil {
+            callback(errStr)
+        }
+    }
+}
