@@ -94,6 +94,44 @@ func SI64(m map[string]interface{}, k string) int64 {
 	return S_I64(MapVStr(m, k, ""))
 }
 
+func Round(num float64) int {
+    return int(num + math.Copysign(0.5, num))
+}
+
+func RoundToInt64(num float64) int64 {
+    return int64(num + math.Copysign(0.5, num))
+}
+
+func DivMod(x, y int64) (int64, int64) {
+    quotient := x / y
+    remainder := x % y
+    return quotient, remainder
+}
+
+func Median(data []float64) float64 {
+    dataCopy := make([]float64, len(data))
+    copy(dataCopy, data)
+
+    sort.Float64s(dataCopy)
+
+    var median float64
+    l := len(dataCopy)
+    if l == 0 {
+        return 0
+    } else if l%2 == 0 {
+        median = (dataCopy[l/2-1] + dataCopy[l/2]) / 2
+    } else {
+        median = dataCopy[l/2]
+    }
+
+    return median
+}
+
+func ToFixed(num float64, precision int) float64 {
+    output := math.Pow(10, float64(precision))
+    return float64(Round(num * output)) / output
+}
+
 func ZeroString(value int64, numberOfZero int) string {
 	padStr := ""
 	for k:=0;k<numberOfZero; k++ {
