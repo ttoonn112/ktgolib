@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 	"time"
-  "github.com/kr/pretty"
 )
 
 // Check ว่ามี key อยู่ m หรือไม่
