@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 )
