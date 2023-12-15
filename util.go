@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"github.com/kr/pretty"
 )
 
 // Check ว่ามี key อยู่ m หรือไม่
@@ -105,4 +106,12 @@ func Log(operation string, username string, key string, msg string, logfilename 
 
 func LogHidden(operation string, username string, key string, msg string, logfilename string){
 	writeLog(operation, username, key, msg, "", logfilename, false)
+}
+
+func Println(object interface{}){
+	pretty.Println(object)
+}
+
+func Print(object interface{}){
+	pretty.Print(object)
 }
