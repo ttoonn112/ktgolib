@@ -119,7 +119,7 @@ func (trans *Transaction) SetTimeout(timeout time.Duration) {
 }
 
 func (trans *Transaction) Commit(){
-	if trans != nil {
+	if trans != nil && trans.conn.IsConnected() {
 		err := trans.tr.Commit()
 	  if err != nil {
 	    Log("trans.Commit", "", err.Error(), "", "SQL")
@@ -129,7 +129,7 @@ func (trans *Transaction) Commit(){
 }
 
 func (trans *Transaction) Rollback(){
-	if trans != nil {
+	if trans != nil && trans.conn.IsConnected() {
 		err := trans.tr.Rollback()
 	  if err != nil {
 	    Log("trans.Rollback", "", err.Error(), "", "SQL")
