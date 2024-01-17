@@ -119,19 +119,23 @@ func (trans *Transaction) SetTimeout(timeout time.Duration) {
 }
 
 func (trans *Transaction) Commit(){
-	err := trans.tr.Commit()
-  if err != nil {
-    Log("trans.Commit", "", err.Error(), "", "SQL")
-    panic("error.DBOperationFailed")
-  }
+	if trans != nil {
+		err := trans.tr.Commit()
+	  if err != nil {
+	    Log("trans.Commit", "", err.Error(), "", "SQL")
+	    panic("error.DBOperationFailed")
+	  }
+	}
 }
 
 func (trans *Transaction) Rollback(){
-	err := trans.tr.Rollback()
-  if err != nil {
-    Log("trans.Rollback", "", err.Error(), "", "SQL")
-    panic("error.DBOperationFailed")
-  }
+	if trans != nil {
+		err := trans.tr.Rollback()
+	  if err != nil {
+	    Log("trans.Rollback", "", err.Error(), "", "SQL")
+	    panic("error.DBOperationFailed")
+	  }
+	}
 }
 
 func (trans *Transaction) Execute(sql string) {
