@@ -30,6 +30,10 @@ func GetMask(mapData map[string]interface{}, keyArr []string) map[string]interfa
 				}
 			}
 			result[strings.TrimSuffix(k, "_")] = info
+		}else if strings.HasPrefix(k, "list_") {
+			if arr, ok := mapData[k].([]map[string]interface{}); ok {
+				result[strings.TrimPrefix(k, "list_")] = CompressArray(arr)
+			}
 		}else{
 			if v, ok := mapData[k]; ok {
 				result[k] = v
