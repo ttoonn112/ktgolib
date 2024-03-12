@@ -18,6 +18,8 @@ func Has(m map[string]interface{}, key string) bool {
 }
 
 // ดึงข้อมูลจาก mapData เฉพาะ key ที่อยู่ใน keyArr
+// ถ้า key ลงท้ายด้วย _ เป็นข้อมูลประเภท Json
+// ถ้า key ลงท้ายด้วย ! เป็นข้อมูลประเภท Json Array 
 func GetMask(mapData map[string]interface{}, keyArr []string) map[string]interface{} {
   result := map[string]interface{}{}
 	for _, k := range keyArr {
@@ -30,9 +32,16 @@ func GetMask(mapData map[string]interface{}, keyArr []string) map[string]interfa
 				}
 			}
 			result[strings.TrimSuffix(k, "_")] = info
-		}else if strings.HasPrefix(k, "list_") {
-			if arr, ok := mapData[k].([]map[string]interface{}); ok {
-				result[strings.TrimPrefix(k, "list_")] = CompressArray(arr)
+		}else if strings.HasSuffix(k, "!") {
+			thekey := strings.TrimSuffix(k, "!")
+			if arrI, ok := mapData[thekey].([]interface{}); ok {
+				items := []map[string]interface{}{}
+				for _, itemI := range arrI {
+					if item, ok := itemI.(map[string]interface{}); ok {
+						items = append(items, item)
+					}
+				}
+				result[thekey] = items
 			}
 		}else{
 			if v, ok := mapData[k]; ok {
