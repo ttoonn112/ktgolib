@@ -19,6 +19,14 @@ func NextDate(day int) string {
 	return DateTimeAddString(nowstr, day*3600*24)[:10]
 }
 
+func AddDate(datestr string, day int) string {
+	t, err := DateTimeValue(datestr)
+	if err != nil {
+		return ""
+	}
+	return DateTimeString(t.Add(time.Second * time.Duration(day*3600*24)))[:10]
+}
+
 func DateTimeValueDiffSec(less time.Time, more time.Time) int64{
   diff := more.Sub(less)
   return int64(diff/1000/time.Millisecond)
