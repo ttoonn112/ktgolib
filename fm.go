@@ -88,6 +88,13 @@ func T(m map[string]interface{}, k string) string {
 	return MapVStr(m, k, "")
 }
 
+func M(m map[string]interface{}, k string) map[string]interface{} {
+	if v, ok := m[k].(map[string]interface{}); ok {
+    return v
+  }
+  return nil
+}
+
 func SF64(m map[string]interface{}, k string) float64 {
 	return S_F64(MapVStr(m, k, ""))
 }
