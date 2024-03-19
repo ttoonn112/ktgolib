@@ -32,6 +32,14 @@ func DateTimeAddString(datestr string, sec int) string{
 	return DateTimeString(t.Add(time.Second * time.Duration(sec)))
 }
 
+func DateTimeAddYMDString(datestr string, year int, month int, day int) string{
+  t, err := DateTimeValue(datestr)
+	if err != nil {
+		return ""
+	}
+	return DateTimeString(t.AddDate(year, month, day))
+}
+
 func DateTimeValue(datestr string) (time.Time, error){
 	if len(datestr) != 10 && len(datestr) != 19 && len(datestr) != 16 {
 		return time.Parse("2006-01-02 15:04:05", "1900-01-01 00:00:00")
