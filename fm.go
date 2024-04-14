@@ -95,6 +95,13 @@ func M(m map[string]interface{}, k string) map[string]interface{} {
   return nil
 }
 
+func NObj(m map[string]map[string]interface{}, k1 string, k2 string) string {
+	if obj, present := m[k1]; present {
+		return T(obj, k2)
+	}
+	return ""
+}
+
 func SF64(m map[string]interface{}, k string) float64 {
 	return S_F64(MapVStr(m, k, ""))
 }
