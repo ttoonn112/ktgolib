@@ -75,6 +75,10 @@ func DateTimeValueDiff(t1 time.Time, t2 time.Time) int64{
   return int64(diff/1000/time.Millisecond)
 }
 
+func DateDiff(less string, more string) int64{
+  return DateTimeDiff(less+" 00:00:00", more+" 00:00:00")/(3600 * 24)
+}
+
 func DateTimeFormat(dtstr string, format string, lang string) string{
 	if len(dtstr) != 10 && len(dtstr) != 19 && len(dtstr) != 16 {return ""}
 	if lang == "" {lang = "en"}
