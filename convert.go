@@ -18,6 +18,36 @@ func ListToMapOfArray(arr []map[string]interface{}, code string) map[string][]ma
 	return objects
 }
 
+func ListToArrayOfArraySortByKey(list []map[string]interface{}, groupKey string, sortKey string, sortType string) [][]map[string]interface{}{
+	slist := ListSort(list, sortKey, sortType)
+	oldKeyValue := ""
+	arr := []map[string]interface{}{}
+	arrays := [][]map[string]interface{}{}
+	for _, rdata := range list {
+		keyValue := T(rdata, groupKey)
+		if keyValue != oldKeyValue {
+			if len(arr) > 0 {
+				arrays = append(arrays, arr)
+			}
+			arr = []map[string]interface{}{}
+			oldKeyValue = keyValue
+		}
+		arr = append(arr, rdata)
+	}
+	if len(arr) > 0 {
+		arrays = append(arrays, arr)
+	}
+	return arrays
+}
+
+func ListToMap(records []map[string]interface{}, unique_code string) map[string]map[string]interface{} {
+	objs := map[string]map[string]interface{}{}
+	for _, record := range records {
+		objs[T(record,unique_code)] = record
+	}
+	return objs
+}
+
 func MapToSortList(olist map[string]map[string]interface{}, key1 string, key2 string, key3 string) []map[string]interface{} {
 	keys := []string{}
 	resultset := map[string]map[string]interface{}{}
@@ -96,12 +126,4 @@ func ArrayOfMapToString(payload []map[string]interface{}) string{
     fieldValue = `[`+fieldValue[1:]+`]`
   }
   return fieldValue
-}
-
-func ListToMap(records []map[string]interface{}, unique_code string) map[string]map[string]interface{} {
-	objs := map[string]map[string]interface{}{}
-	for _, record := range records {
-		objs[T(record,unique_code)] = record
-	}
-	return objs
 }
