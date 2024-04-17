@@ -23,7 +23,7 @@ func ListToArrayOfArraySortByKey(list []map[string]interface{}, groupKey string,
 	oldKeyValue := ""
 	arr := []map[string]interface{}{}
 	arrays := [][]map[string]interface{}{}
-	for _, rdata := range list {
+	for _, rdata := range slist {
 		keyValue := T(rdata, groupKey)
 		if keyValue != oldKeyValue {
 			if len(arr) > 0 {
