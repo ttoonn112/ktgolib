@@ -19,7 +19,7 @@ func Has(m map[string]interface{}, key string) bool {
 
 // ดึงข้อมูลจาก mapData เฉพาะ key ที่อยู่ใน keyArr
 // ถ้า key ลงท้ายด้วย _ เป็นข้อมูลประเภท Json
-// ถ้า key ลงท้ายด้วย ! เป็นข้อมูลประเภท Json Array 
+// ถ้า key ลงท้ายด้วย ! เป็นข้อมูลประเภท Json Array
 func GetMask(mapData map[string]interface{}, keyArr []string) map[string]interface{} {
   result := map[string]interface{}{}
 	for _, k := range keyArr {
@@ -74,6 +74,14 @@ func LastXChar(str string, num int) string{
 		return str[len(str)-num:]
 	}
 	return ""
+}
+
+func CopyMap(item map[string]interface{}) map[string]interface{} {
+	nitem := map[string]interface{}{}
+	for k,v := range item {
+		nitem[k] = v
+	}
+	return nitem
 }
 
 func TryCatch(callback func(errStr string)) {
