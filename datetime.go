@@ -20,6 +20,7 @@ func NextDate(day int) string {
 }
 
 func AddDate(datestr string, day int) string {
+	if len(datestr) == 10 { datestr = datestr+" 00:00:00" }
 	t, err := DateTimeValue(datestr)
 	if err != nil {
 		return ""
