@@ -65,10 +65,14 @@ func Compress(payload map[string]interface{}) string{
   for key, v := range payload {
     switch value := v.(type) {
      case string:
-        fields[key] = EncloseText(T(payload,key))
+			 	if T(payload,key) != "" {
+        	fields[key] = EncloseText(T(payload,key))
+				}
         break
      default:
-        fields[key] = value
+			 	if value != float64(0) && value != int64(0) && value != nil {
+        	fields[key] = value
+				}
         break
     }
   }
