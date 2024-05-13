@@ -84,6 +84,30 @@ func CopyMap(item map[string]interface{}) map[string]interface{} {
 	return nitem
 }
 
+func Includes(arr1_str string, arr2_str string, sep string) bool{
+	arr1 := strings.Split(arr1_str, sep)
+	arr2 := strings.Split(arr2_str, sep)
+	for _, a1 := range arr1 {
+    for _, a2 := range arr2 {
+      if a1 == a2 {
+        return true
+      }
+    }
+  }
+	return false
+}
+
+func HasIncludes(arr1 []string, arr2 []string) bool{
+	for _, a1 := range arr1 {
+    for _, a2 := range arr2 {
+      if a1 == a2 {
+        return true
+      }
+    }
+  }
+	return false
+}
+
 func TryCatch(callback func(errStr string)) {
     if r := recover(); r != nil {
         errStr := ""
