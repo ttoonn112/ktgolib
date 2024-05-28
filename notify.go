@@ -1,4 +1,4 @@
-package notify
+package ktgolib
 
 import (
   "github.com/utahta/go-linenotify"
