@@ -17,3 +17,13 @@ func ListSort(list []map[string]interface{}, key string, sortType string) []map[
 	}
 	return list
 }
+
+func ListReverse(arr []map[string]interface{}) []map[string]interface{} {
+    reversed := make([]map[string]interface{}, len(arr))
+    j := 0
+    for i := len(arr) - 1; i >= 0; i-- {
+        reversed[j] = arr[i]
+        j++
+    }
+    return reversed
+}
