@@ -153,6 +153,14 @@ func LogHidden(operation string, username string, key string, msg string, logfil
 	writeLog(operation, username, key, msg, "", logfilename, false)
 }
 
+func LogHiddenWithDuration(operation string, username string, key string, msg string, duration string, logfilename string){
+	writeLog(operation, username, key, msg, duration, logfilename, false)
+}
+
+func LogWithDuration(operation string, username string, key string, msg string, duration string, logfilename string){
+	writeLog(operation, username, key, msg, duration, logfilename, true)
+}
+
 func Println(object interface{}){
 	pretty.Println(object)
 }
