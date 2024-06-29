@@ -40,6 +40,27 @@ func ListToArrayOfArraySortByKey(list []map[string]interface{}, groupKey string,
 	return arrays
 }
 
+func SortedListToArrayOfArray(slist []map[string]interface{}, groupKey string) [][]map[string]interface{}{
+	oldKeyValue := ""
+	arr := []map[string]interface{}{}
+	arrays := [][]map[string]interface{}{}
+	for _, rdata := range slist {
+		keyValue := T(rdata, groupKey)
+		if keyValue != oldKeyValue {
+			if len(arr) > 0 {
+				arrays = append(arrays, arr)
+			}
+			arr = []map[string]interface{}{}
+			oldKeyValue = keyValue
+		}
+		arr = append(arr, rdata)
+	}
+	if len(arr) > 0 {
+		arrays = append(arrays, arr)
+	}
+	return arrays
+}
+
 func ListToMap(records []map[string]interface{}, unique_code string) map[string]map[string]interface{} {
 	objs := map[string]map[string]interface{}{}
 	for _, record := range records {
