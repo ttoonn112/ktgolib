@@ -148,3 +148,18 @@ func ArrayOfMapToString(payload []map[string]interface{}) string{
   }
   return fieldValue
 }
+
+func MapOfArrayToSortedArrayOfArray(slist map[string][]map[string]interface{}) [][]map[string]interface{} {
+	keys := []string{}
+	for key, _ := range slist {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	list := [][]map[string]interface{}{}
+	for _, kv := range keys {
+		if rdata, ok := slist[kv]; ok {
+			list = append(list, rdata)
+		}
+	}
+	return list
+}
