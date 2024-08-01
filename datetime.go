@@ -1,6 +1,7 @@
 package ktgolib
 
 import (
+	"math"
 	"time"
 	"strings"
 )
@@ -156,4 +157,47 @@ func DateTimeFormat(dtstr string, format string, lang string) string{
 	}
 
   return datestr
+}
+
+func GetTimeHourFromSecondNoBlank(s int64) string{
+	result := GetTimeHourFromSecond(s)
+	if result == "00:00" {
+		result = ""
+	}
+	return result
+}
+
+func GetTimeHourFromSecond(s int64) string{
+	second := float64(0)
+	min := float64(0)
+	hour := float64(0)
+	sec := float64(s)
+	if(sec < 60){
+		second = sec
+	}else if(sec < 3600){
+		second = math.Mod(sec,60)
+		min = math.Floor(sec/60)
+	}else if(sec < 3600 * 24){
+		second = math.Mod(sec,60)
+		min = math.Floor(math.Mod(sec,3600)/60)
+		hour = math.Floor(sec/3600)
+	}else {
+		second = math.Mod(sec,60)
+		min = math.Floor(math.Mod(sec,3600)/60)
+		hour = math.Floor(sec/3600)
+	}
+	if second >= 30 {
+		min += 1
+		if min >= 60 {
+			min = min - 60
+			hour += 1
+		}
+	}
+	hourStr := F64_S(hour,0)
+	if(hour < 10){
+		hourStr = "0"+hourStr
+	}
+	minStr := "00"+F64_S(min,0)
+	minStr = minStr[len(minStr)-2:]
+	return hourStr+":"+minStr
 }
