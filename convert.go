@@ -176,5 +176,5 @@ func MapToToSortListByKey(olist map[string]map[string]interface{}) []map[string]
 			list = append(list, rdata)
 		}
 	}
-	return resultset
+	return list
 }
