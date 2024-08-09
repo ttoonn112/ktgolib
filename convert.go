@@ -163,3 +163,18 @@ func MapOfArrayToSortedArrayOfArray(slist map[string][]map[string]interface{}) [
 	}
 	return list
 }
+
+func MapToToSortListByKey(olist map[string]map[string]interface{}) []map[string]interface{} {
+	keys := []string{}
+	for key, _ := range olist {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	list := []map[string]interface{}{}
+	for _, kv := range keys {
+		if rdata, ok := olist[kv]; ok {
+			list = append(list, rdata)
+		}
+	}
+	return resultset
+}
