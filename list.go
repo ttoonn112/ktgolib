@@ -27,3 +27,18 @@ func ListReverse(arr []map[string]interface{}) []map[string]interface{} {
     }
     return reversed
 }
+
+func MapSortByKey(olist map[string]map[string]interface{}) map[string]map[string]interface{} {
+	keys := []string{}
+	for key, _ := range olist {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	resultset := map[string]map[string]interface{}{}
+	for _, kv := range keys {
+		if rdata, ok := olist[kv]; ok {
+			resultset[kv] = rdata
+		}
+	}
+	return resultset
+}
