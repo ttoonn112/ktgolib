@@ -15,6 +15,22 @@ func AddSqlFilter(field_name string, value string) string{
 	return ""
 }
 
+func AddSqlLikePrefixFilter(field_name string, value string) string{
+	if value != "All" && value != "" {
+		filter := " and "+field_name+" like '%"+value+"' "
+		return filter
+	}
+	return ""
+}
+
+func AddSqlLikeSuffixFilter(field_name string, value string) string{
+	if value != "All" && value != "" {
+		filter := " and "+field_name+" like '"+value+"%' "
+		return filter
+	}
+	return ""
+}
+
 func AddSqlLikeFilter(field_name string, value string) string{
 	if value != "All" && value != "" {
 		filter := " and "+field_name+" like '%"+value+"%' "
