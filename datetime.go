@@ -147,6 +147,8 @@ func DateTimeFormat(dtstr string, format string, lang string) string{
 			datestr = syear[2:]+smonth+sday
 		case "enLogDateTime", "thLogDateTime":
 			datestr = sday+smonth+syear+""+shour+""+smin+""+ssec
+		case "enTimestamp", "thTimestamp":
+			datestr = syear+smonth+sday+""+shour+""+smin+""+ssec
 		case "enDDMMYYYY":
 			datestr = sday+smonth+syear
 			if datestr == "00000000" {datestr = ""}
