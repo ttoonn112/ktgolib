@@ -150,7 +150,7 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 
 	sel, err := trans.conn.Prepare(sql)
   if err != nil {
-    Log("trans.Query", "", err.Error(), sql, "SQL")
+    Log("trans.Query (Prepare)", "", err.Error(), sql, "SQL")
     panic("error.DBOperationFailed")
   }
 
