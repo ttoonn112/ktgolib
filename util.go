@@ -110,6 +110,7 @@ func HasIncludes(arr1 []string, arr2 []string) bool{
 	return false
 }
 
+// ไม่สามารถใช้ร่วมกับการ return ค่า กรณี TryCatch จับการ Error ได้
 func TryCatch(callback func(errStr string)) {
     if r := recover(); r != nil {
         errStr := ""
@@ -124,21 +125,21 @@ func TryCatch(callback func(errStr string)) {
     }
 }
 
+// ###################### Begin Attempt ########################
 // ฟังก์ชัน Attempt รับฟังก์ชันที่ต้องการรันซ้ำ, จำนวนครั้งที่จำกัด และพารามิเตอร์แบบ variadic
 func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...interface{}) string {
-	operationName := getFunctionName(operation)
 	errMsgReturn := ""
 
 	for i := 0; i < maxAttempts; i++ {
 		runTime := time.Now()
-		result := callFunction(i+1, operation, params...)
 
-		errMsg, ok := result[0].Interface().(string)
-		if ok && errMsg == "" {
-			return ""
-		}else{
+		errMsg := callFunction(i+1, operation, params...)
+
+		if errMsg != "" {
 			errMsgReturn = errMsg
-			LogWithDuration(operationName, "", I_S(i+1), errMsg, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "Attempt")
+			LogWithDuration(getFunctionName(operation), "", I_S(i+1), errMsg, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "Attempt")
+		}else{
+			return ""
 		}
 
 		time.Sleep(time.Duration(delaySec)*time.Second) // ถ้าไม่สำเร็จ รอช่วงเวลาที่กำหนดก่อนพยายามใหม่
@@ -148,10 +149,22 @@ func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...int
 }
 
 // callFunction ใช้ reflect เพื่อเรียกใช้ฟังก์ชันพร้อมกับพารามิเตอร์ที่กำหนด (ถูกใช้งานที่ Attempt)
-func callFunction(numAttempt int, fn interface{}, params ...interface{}) []reflect.Value {
+func callFunction(numAttempt int, fn interface{}, params ...interface{}) string {
+	errMsg := ""
+
+	defer func(){
+		if r := recover(); r != nil {
+			if err, ok := r.(error); ok {
+					errMsg = err.Error()
+			} else if errS, ok := r.(string); ok {
+					errMsg = errS
+			}
+		}
+	}()
+
 	fnValue := reflect.ValueOf(fn)
 	if fnValue.Kind() != reflect.Func {
-		panic("operation is not a function")
+		return "Operation is not a function"
 	}
 
 	args := make([]reflect.Value, len(params))
@@ -159,12 +172,15 @@ func callFunction(numAttempt int, fn interface{}, params ...interface{}) []refle
 		args[i] = reflect.ValueOf(param)
 	}
 
-	return fnValue.Call(args)
+	fnValue.Call(args)		// Can return []reflect.Value from fnValue.Call to get the result(s) back
+
+	return errMsg
 }
 
 func getFunctionName(i interface{}) string {
 	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 }
+// ###################### End Attempt ########################
 
 func writeLog(operation string, username string, key string, msg string, duration string, logfilename string, showDisplay bool){
 	t := time.Now()
