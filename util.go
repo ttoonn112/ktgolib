@@ -137,7 +137,7 @@ func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...int
 
 		if errMsg != "" {
 			errMsgReturn = errMsg
-			LogWithDuration(getFunctionName(operation), "", I_S(i+1), errMsg, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "Attempt")
+			LogHiddenWithDuration(getFunctionName(operation), "", I_S(i+1), errMsg, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "Attempt")
 		}else{
 			return ""
 		}
