@@ -134,6 +134,7 @@ func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...int
 		runTime := time.Now()
 
 		errMsg := callFunction(i+1, operation, params...)
+		Println("Result : "+errMsg)
 
 		if errMsg != "" {
 			errMsgReturn = errMsg
@@ -154,6 +155,7 @@ func callFunction(numAttempt int, fn interface{}, params ...interface{}) string 
 
 	defer func(){
 		if r := recover(); r != nil {
+			Println(r)
 			if err, ok := r.(error); ok {
 					errMsg = err.Error()
 			} else if errS, ok := r.(string); ok {
