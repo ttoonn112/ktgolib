@@ -150,8 +150,7 @@ func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...int
 }
 
 // callFunction ใช้ reflect เพื่อเรียกใช้ฟังก์ชันพร้อมกับพารามิเตอร์ที่กำหนด (ถูกใช้งานที่ Attempt)
-func callFunction(numAttempt int, fn interface{}, params ...interface{}) string {
-	errMsg := ""
+func callFunction(numAttempt int, fn interface{}, params ...interface{}) (errMsg string) {
 
 	defer func(){
 		if r := recover(); r != nil {
@@ -166,7 +165,7 @@ func callFunction(numAttempt int, fn interface{}, params ...interface{}) string 
 
 	fnValue := reflect.ValueOf(fn)
 	if fnValue.Kind() != reflect.Func {
-		return "Operation is not a function"
+		errMsg = "Operation is not a function"
 	}
 
 	args := make([]reflect.Value, len(params))
@@ -176,7 +175,7 @@ func callFunction(numAttempt int, fn interface{}, params ...interface{}) string 
 
 	fnValue.Call(args)		// Can return []reflect.Value from fnValue.Call to get the result(s) back
 
-	return errMsg
+	return
 }
 
 func getFunctionName(i interface{}) string {
