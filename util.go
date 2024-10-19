@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"reflect"
+	"runtime"
 	"github.com/kr/pretty"
 )
 
@@ -120,6 +122,48 @@ func TryCatch(callback func(errStr string)) {
             callback(errStr)
         }
     }
+}
+
+// ฟังก์ชัน Attempt รับฟังก์ชันที่ต้องการรันซ้ำ, จำนวนครั้งที่จำกัด และพารามิเตอร์แบบ variadic
+func Attempt(operation interface{}, maxAttempts int, delaySec int, params ...interface{}) string {
+	operationName := getFunctionName(operation)
+	errMsgReturn := ""
+
+	for i := 0; i < maxAttempts; i++ {
+		runTime := time.Now()
+		result := callFunction(i+1, operation, params...)
+
+		errMsg, ok := result[0].Interface().(string)
+		if ok && errMsg == "" {
+			return ""
+		}else{
+			errMsgReturn = errMsg
+			LogWithDuration(operationName, "", I_S(i+1), errMsg, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "Attempt")
+		}
+
+		time.Sleep(time.Duration(delaySec)*time.Second) // ถ้าไม่สำเร็จ รอช่วงเวลาที่กำหนดก่อนพยายามใหม่
+	}
+
+	return errMsgReturn
+}
+
+// callFunction ใช้ reflect เพื่อเรียกใช้ฟังก์ชันพร้อมกับพารามิเตอร์ที่กำหนด (ถูกใช้งานที่ Attempt)
+func callFunction(numAttempt int, fn interface{}, params ...interface{}) []reflect.Value {
+	fnValue := reflect.ValueOf(fn)
+	if fnValue.Kind() != reflect.Func {
+		panic("operation is not a function")
+	}
+
+	args := make([]reflect.Value, len(params))
+	for i, param := range params {
+		args[i] = reflect.ValueOf(param)
+	}
+
+	return fnValue.Call(args)
+}
+
+func getFunctionName(i interface{}) string {
+	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 }
 
 func writeLog(operation string, username string, key string, msg string, duration string, logfilename string, showDisplay bool){
