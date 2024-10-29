@@ -2,6 +2,7 @@ package ktgolib
 
 import (
   "sync"
+  "time"
   "golang.org/x/time/rate"
 )
 
