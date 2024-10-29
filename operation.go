@@ -30,7 +30,8 @@ func Operation_IsLimitExceeded(username string, operation string, key string) bo
   return result
 }
 
-func Operation_IsUserLimitExceeded(username string, operation string, key string) bool {
+// sec = "จำนวนวินาทีที่ต้องรอ ก่อนทำ Operation ครั้งถัดไป"
+func Operation_IsLimitExceededBySec(username string, operation string, key string, sec int) bool {
   mu.Lock()
   defer mu.Unlock()
 
@@ -40,13 +41,13 @@ func Operation_IsUserLimitExceeded(username string, operation string, key string
 
   limiter, exists := userOperationLimiters[username][operation]
   if !exists {
-    limiter = rate.NewLimiter(rate.Every(2 * time.Second), 1)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ 2 วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
+    limiter = rate.NewLimiter(rate.Every(sec * time.Second), 1)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ [sec] วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
     userOperationLimiters[username][operation] = limiter
   }
 
   result := !limiter.Allow()
   if result {
-    LogHidden(operation, username, key, "", "OperationUserLimitExceeded")
+    LogHidden(operation, username, key, "", "OperationLimitExceededBySec")
   }
 
   return result
