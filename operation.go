@@ -42,7 +42,7 @@ func Operation_IsLimitExceededBySec(username string, operation string, key strin
 
   limiter, exists := userOperationLimiters[username][operation]
   if !exists {
-    limiter = rate.NewLimiter(rate.Every(sec * time.Second), 1)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ [sec] วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
+    limiter = rate.NewLimiter(rate.Every(time.Duration(sec) * time.Second), 1)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ [sec] วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
     userOperationLimiters[username][operation] = limiter
   }
 
