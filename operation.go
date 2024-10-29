@@ -8,7 +8,7 @@ import (
 var userOperationLimiters = make(map[string]map[string]*rate.Limiter)
 var mu sync.Mutex
 
-func Operation_IsLimitedExceed(username string, operation string, key string) bool {
+func Operation_IsLimitExceeded(username string, operation string, key string) bool {
   mu.Lock()
   defer mu.Unlock()
 
@@ -18,7 +18,7 @@ func Operation_IsLimitedExceed(username string, operation string, key string) bo
 
   limiter, exists := userOperationLimiters[username][operation]
   if !exists {
-    limiter = rate.NewLimiter(1, 1)       // 1 request ต่อวินาที, เก็บ Token ได้สูงสุด 1 
+    limiter = rate.NewLimiter(1, 1)       // 1 request ต่อวินาที, เก็บ Token ได้สูงสุด 1
     userOperationLimiters[username][operation] = limiter
   }
 
