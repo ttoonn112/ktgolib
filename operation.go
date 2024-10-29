@@ -18,7 +18,7 @@ func Operation_IsLimitedExceed(username string, operation string, key string) bo
 
   limiter, exists := userOperationLimiters[username][operation]
   if !exists {
-    limiter = rate.NewLimiter(1, 1)       // กำหนด 1 request per second
+    limiter = rate.NewLimiter(1, 1)       // 1 request ต่อวินาที, เก็บ Token ได้สูงสุด 1 
     userOperationLimiters[username][operation] = limiter
   }
 
