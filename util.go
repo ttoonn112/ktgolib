@@ -78,12 +78,17 @@ func LastXChar(str string, num int) string{
 	return ""
 }
 
-func CopyMap(item map[string]interface{}) map[string]interface{} {
-	nitem := map[string]interface{}{}
-	for k,v := range item {
-		nitem[k] = v
-	}
-	return nitem
+func CopyMap(m map[string]interface{}) map[string]interface{} {
+  cp := make(map[string]interface{})
+  for k, v := range m {
+      vm, ok := v.(map[string]interface{})
+      if ok {
+          cp[k] = CopyMap(vm)
+      } else {
+          cp[k] = v
+      }
+  }
+  return cp
 }
 
 func Includes(arr1_str string, arr2_str string, sep string) bool{
