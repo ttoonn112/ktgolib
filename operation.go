@@ -55,8 +55,9 @@ func Operation_IsLimitExceededBySec(username string, operation string, key strin
 }
 
 // sec = "จำนวนวินาทีที่ต้องรอ ก่อนทำ Operation ครั้งถัดไป"
-// token = จำนวนครั้งที่ buffer ไว้ทุกๆ sec
-func Operation_IsLimitExceededBySecToken(username string, operation string, key string, sec int, token int) bool {
+// ระบบสามารถรับคำขอได้ ทันทีสูงสุด [burst] requests อย่างรวดเร็ว
+// หลังจากนั้น คำขอใหม่จะต้องรอให้ "โทเค็น" เพิ่มขึ้นตามอัตรา [sec] requests/second
+func Operation_IsLimitExceededBySecToken(username string, operation string, key string, sec int, burst int) bool {
   mu.Lock()
   defer mu.Unlock()
 
@@ -66,7 +67,7 @@ func Operation_IsLimitExceededBySecToken(username string, operation string, key 
 
   limiter, exists := userOperationLimiters[username][operation]
   if !exists {
-    limiter = rate.NewLimiter(rate.Every(time.Duration(sec) * time.Second), token)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ [sec] วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
+    limiter = rate.NewLimiter(rate.Every(time.Duration(sec) * time.Second), burst)       // จะสามารถทำงานได้ เพียง 1 ครั้งทุก ๆ [sec] วินาที โดยไม่มีการสะสม Token เพื่อทำงานหลายครั้งต่อเนื่อง
     userOperationLimiters[username][operation] = limiter
   }
 
