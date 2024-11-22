@@ -71,7 +71,7 @@ func ListToMap(records []map[string]interface{}, unique_code string) map[string]
 
 func MapToList(olist map[string]map[string]interface{}) []map[string]interface{} {
 	list := []map[string]interface{}{}
-	for _, v := range olist {
+	for _, rdata := range olist {
 		list = append(list, rdata)
 	}
 	return list
