@@ -18,6 +18,19 @@ func ListSort(list []map[string]interface{}, key string, sortType string) []map[
 	return list
 }
 
+func ListSortNumber(list []map[string]interface{}, key string, sortType string) []map[string]interface{} {
+	if sortType == "desc" {
+		sort.Slice(list, func(i, j int) bool {
+			return SF64(list[i],key) > SF64(list[j],key)
+		})
+	}else{
+		sort.Slice(list, func(i, j int) bool {
+			return SF64(list[i],key) < SF64(list[j],key)
+		})
+	}
+	return list
+}
+
 func ListReverse(arr []map[string]interface{}) []map[string]interface{} {
     reversed := make([]map[string]interface{}, len(arr))
     j := 0

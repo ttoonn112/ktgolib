@@ -69,6 +69,14 @@ func ListToMap(records []map[string]interface{}, unique_code string) map[string]
 	return objs
 }
 
+func MapToList(olist map[string]map[string]interface{}) []map[string]interface{} {
+	list := []map[string]interface{}{}
+	for _, v := range olist {
+		list = append(list, rdata)
+	}
+	return list
+}
+
 func MapToSortList(olist map[string]map[string]interface{}, key1 string, key2 string, key3 string) []map[string]interface{} {
 	keys := []string{}
 	resultset := map[string]map[string]interface{}{}
