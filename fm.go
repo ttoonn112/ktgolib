@@ -8,6 +8,7 @@ import (
   "strconv"
   "regexp"
 	"math/rand"
+  "github.com/dustin/go-humanize"
 )
 
 func MapVStr(m map[string]interface{}, k string, default_value interface{}) string {
@@ -146,6 +147,19 @@ func Median(data []float64) float64 {
 func ToFixed(num float64, precision int) float64 {
     output := math.Pow(10, float64(precision))
     return float64(Round(num * output)) / output
+}
+
+func FormatNumber(num float64, precision int, showzero bool) string {
+	if !showzero && num == 0 {return ""}
+	decimal := ""
+	for i := 0; i < precision; i++ {
+		decimal += "#"
+	}
+	if decimal != "" {
+		return humanize.FormatFloat("#,###."+decimal, ToFixed(num, precision))
+	}else{
+		return humanize.Comma(int64(ToFixed(num, precision)))
+	}
 }
 
 func ZeroString(value int64, numberOfZero int) string {
