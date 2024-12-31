@@ -63,6 +63,22 @@ func AddSqlMultipleFilter(field_name string, value string) string{
 	return ""
 }
 
+func AddSqlNotInMultipleFilter(field_name string, value string) string{
+	if value != "All" && value != "" {
+		values := strings.Split(value,"|")
+		if len(values) > 0 {
+			filter := " and "+field_name+" not in ("
+			for _, skey := range values {
+				filter += "'"+skey+"',"
+			}
+			filter = filter[:len(filter)-1]
+			filter += ")"
+			return filter
+		}
+	}
+	return ""
+}
+
 func GetSqlMultipleFilter(value string) string{
 	if value != "All" && value != "" {
 		values := strings.Split(value,"|")
