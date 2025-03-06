@@ -4,7 +4,7 @@ import (
   //"bytes"
 	"context"
   "github.com/utahta/go-linenotify"
-  "github.com/go-telegram-bot-api/telegram-bot-api"
+  tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 func Notify_ToLine(token string, msg string) (string, string) {
@@ -28,6 +28,7 @@ func Notify_ToTelegram(botToken string, chatID int64, message string) error {
 	if err != nil {
 		return err
 	}
+	
 	msg := tgbotapi.NewMessage(chatID, message)
 	_, err = bot.Send(msg)
 	if err != nil {
@@ -36,8 +37,18 @@ func Notify_ToTelegram(botToken string, chatID int64, message string) error {
 	return nil
 }
 
-func Notify_TelegramGetUpdates(botToken string) map[string]interface{} {
-	url := "https://api.telegram.org/bot"+botToken+"/getUpdates"
-	result := Http_Get(url)
-	return result
+func Notify_ToTelegramWithHTML(botToken string, chatID int64, message string) error {
+	bot, err := tgbotapi.NewBotAPI(botToken)
+	if err != nil {
+		return err
+	}
+	
+	msg := tgbotapi.NewMessage(chatID, message)
+	msg.ParseMode = "HTML"
+	_, err = bot.Send(msg)
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
