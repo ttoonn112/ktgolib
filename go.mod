@@ -12,6 +12,7 @@ require (
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible // indirect
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1 // indirect
 	github.com/google/uuid v0.0.0-20171113160352-8c31c18f31ed // indirect
 	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
