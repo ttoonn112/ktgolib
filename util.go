@@ -279,7 +279,11 @@ func CsvLog(headers []string, row map[string]interface{}, filename string) error
 			record[i] = ""
 			continue
 		}
-		record[i] = fmt.Sprintf("%v", val)
+		if reflect.TypeOf(val).Kind() == reflect.String {
+			record[i] = fmt.Sprintf("%s", val)
+		}else{
+			record[i] = fmt.Sprintf("%v", val)
+		}
 	}
 
 	if err := writer.Write(record); err != nil {
