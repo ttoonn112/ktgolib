@@ -11,6 +11,7 @@ import (
 	"reflect"
 	"runtime"
 	"github.com/kr/pretty"
+	"encoding/csv"
 )
 
 // Check ว่ามี key อยู่ m หรือไม่
@@ -225,6 +226,68 @@ func LogWithDuration(operation string, username string, key string, msg string, 
 	writeLog(operation, username, key, msg, duration, logfilename, true)
 }
 
+func CsvLog(headers []string, row map[string]interface{}, filename string) error {
+	t := time.Now()
+
+	if len(row) == 0 {
+		return fmt.Errorf("no data to write")
+	}
+
+	if _, err := os.Stat("logs/"); os.IsNotExist(err) {
+		os.Mkdir("logs/", os.ModePerm)
+	}
+ 
+	logdatepath := "logs/"+t.Format("060102")
+	if _, err := os.Stat(logdatepath); os.IsNotExist(err) {
+		os.Mkdir(logdatepath, os.ModePerm)
+	}
+
+	logfilename := logdatepath+"/"+filename+".csv"
+
+	var file *os.File
+	var err error
+	writeHeader := true
+
+	if _, err = os.Stat(logfilename); err == nil {
+		file, err = os.OpenFile(logfilename, os.O_APPEND|os.O_WRONLY, 0644)
+		writeHeader = false // มีไฟล์แล้ว ไม่ต้องเขียน header ซ้ำ
+	} else {
+		file, err = os.Create(logfilename)
+	}
+
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	// เขียน header ถ้าจำเป็น
+	if writeHeader {
+		if err := writer.Write(headers); err != nil {
+			return err
+		}
+	}
+
+	// เขียนค่าของ row
+	record := make([]string, len(headers))
+	for i, key := range headers {
+		val := row[key]
+		if val == nil {
+			record[i] = ""
+			continue
+		}
+		record[i] = fmt.Sprintf("%v", val)
+	}
+
+	if err := writer.Write(record); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func Println(object interface{}){
 	pretty.Println(object)
 }
@@ -232,3 +295,5 @@ func Println(object interface{}){
 func Print(object interface{}){
 	pretty.Print(object)
 }
+
+
