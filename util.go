@@ -280,7 +280,8 @@ func CsvLog(headers []string, row map[string]interface{}, filename string) error
 			continue
 		}
 		if reflect.TypeOf(val).Kind() == reflect.String {
-			record[i] = fmt.Sprintf("%s", val)
+			escaped := strings.ReplaceAll(fmt.Sprintf("%v", val), `"`, `""`)
+			record[i] = fmt.Sprintf(`"%s"`, escaped)
 		}else{
 			record[i] = fmt.Sprintf("%v", val)
 		}
