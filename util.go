@@ -10,8 +10,9 @@ import (
 	"time"
 	"reflect"
 	"runtime"
-	"github.com/kr/pretty"
 	"encoding/csv"
+	"io"
+	"github.com/kr/pretty"
 )
 
 // Check ว่ามี key อยู่ m หรือไม่
@@ -286,6 +287,47 @@ func CsvLog(headers []string, row map[string]interface{}, filename string) error
 	}
 
 	return nil
+}
+
+func CsvRead(filename string, limit int) ([]map[string]interface{}, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	var results []map[string]interface{}
+
+	// อ่าน header
+	headers, err := reader.Read()
+	if err != nil {
+		return nil, fmt.Errorf("failed to read CSV header: %v", err)
+	}
+
+	// อ่านแต่ละบรรทัด
+	readNum := 0
+	for {
+		record, err := reader.Read()
+		if err == io.EOF && readNum < limit {
+			break
+		} else if err != nil {
+			return nil, fmt.Errorf("failed to read CSV row: %v", err)
+		}
+
+		row := make(map[string]interface{})
+		for i, field := range headers {
+			if i < len(record) {
+				row[field] = record[i]
+			} else {
+				row[field] = ""
+			}
+		}
+		results = append(results, row)
+		readNum += 1
+	}
+
+	return results, nil
 }
 
 func Println(object interface{}){
