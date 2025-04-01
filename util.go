@@ -309,7 +309,7 @@ func CsvRead(filename string, limit int) ([]map[string]interface{}, error) {
 	readNum := 0
 	for {
 		record, err := reader.Read()
-		if err == io.EOF && readNum < limit {
+		if err == io.EOF || readNum >= limit {
 			break
 		} else if err != nil {
 			return nil, fmt.Errorf("failed to read CSV row: %v", err)
