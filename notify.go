@@ -2,11 +2,12 @@ package ktgolib
 
 import (
   //"bytes"
-	"context"
-  "github.com/utahta/go-linenotify"
+  //"context"
+  //"github.com/utahta/go-linenotify"
   tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+/*
 func Notify_ToLine(token string, msg string) (string, string) {
 	c := linenotify.NewClient()
 	response, err := c.Notify(context.Background(), token, msg, "", "", nil)
@@ -21,7 +22,7 @@ func Notify_ToLine(token string, msg string) (string, string) {
 	//c.Notify(context.Background(), token, "hello world", "", "", nil)
 	//c.Notify(context.Background(), token, "hello world", "http://localhost/thumb.jpg", "http://localhost/full.jpg", nil)
 	//c.Notify(context.Background(), token, "hello world", "", "", bytes.NewReader([]byte("image bytes")))
-}
+}*/
 
 func Notify_ToTelegram(botToken string, chatID int64, message string) error {
 	bot, err := tgbotapi.NewBotAPI(botToken)
