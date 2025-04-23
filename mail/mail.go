@@ -77,7 +77,7 @@ func (r *Request) sendMail() error {
 		}
   	}
 	if to == nil {
-		return false
+		return errors.New("Recipient email is required")
 	}
   	if r.bcc != nil && len(r.bcc) > 0 {
    	 	body += "Bcc: " + strings.Join(r.bcc, ",") + "\r\n"
