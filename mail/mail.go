@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/smtp"
   	"strings"
+	"errors"
 	//"github.com/kr/pretty"
 )
 
