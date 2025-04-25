@@ -98,7 +98,7 @@ func (r *Request) sendMailWithTemplate(templateName string, items interface{}) e
 	return r.sendMail()
 }
 
-func Send(template string, rcpt []string, cc []string, subject string, message map[string]string) error {
+func Send(template string, rcpt []string, cc []string, subject string, message map[string]interface{}) error {
   	r := NewRequest(rcpt, cc, Mail_Admin, subject)
   	message["subject"] = subject
 	return r.sendMailWithTemplate(template, message)
