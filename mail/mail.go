@@ -81,7 +81,7 @@ func (r *Request) sendMail() error {
 		return errors.New("Recipient email is required")
 	}
   	if r.bcc != nil && len(r.bcc) > 0 {
-   	 	body += "Bcc: " + strings.Join(r.bcc, ",") + "\r\n"
+   	 	//body += "Bcc: " + strings.Join(r.bcc, ",") + "\r\n"
 		to = append(to, r.bcc...)
   	}
   	body += "Subject: " + r.subject + "\r\n" + MIME + "\r\n" + r.body
