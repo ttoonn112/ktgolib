@@ -87,6 +87,33 @@ func Compress(payload map[string]interface{}) string{
   return str
 }
 
+func CompressRaw(payload map[string]interface{}) string{
+  fields := map[string]interface{}{}
+  for key, v := range payload {
+    switch value := v.(type) {
+     case string:
+			 	if T(payload,key) != "" {
+        	fields[key] = EncloseText(T(payload,key))
+				}
+        break
+     default:
+			 	if value != nil {
+        	fields[key] = value
+				}
+        break
+    }
+  }
+  fieldsByte, _ := json.Marshal(fields)
+  str := string(fieldsByte)
+  str = strings.Map(func(r rune) rune {
+      if unicode.IsPrint(r) {
+          return r
+      }
+      return -1
+  }, str)
+  return str
+}
+
 func CompressArray(payload []map[string]interface{}) string{
   fieldValue := ""
   for _, obj := range payload {
