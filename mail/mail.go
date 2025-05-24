@@ -98,8 +98,14 @@ func (r *Request) sendMailWithTemplate(templateName string, items interface{}) e
 	return r.sendMail()
 }
 
-func Send(template string, rcpt []string, cc []string, subject string, message map[string]interface{}) error {
+func SendWithMonitorByAdmin(template string, rcpt []string, cc []string, subject string, message map[string]interface{}) error {
   	r := NewRequest(rcpt, cc, Mail_Admin, subject)
+  	message["subject"] = subject
+	return r.sendMailWithTemplate(template, message)
+}
+
+func Send(template string, rcpt []string, cc []string, bcc []string, subject string, message map[string]interface{}) error {
+  	r := NewRequest(rcpt, cc, bcc, subject)
   	message["subject"] = subject
 	return r.sendMailWithTemplate(template, message)
 }
