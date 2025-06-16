@@ -86,7 +86,7 @@ func http_PostJson(apiurl string, headers map[string]string, data map[string]int
     panic("error.APIRequestFailed")
   }
 
-  LogHiddenWithDuration("http_PostJson", "", apiurl, string(body), I64_S(DateTimeValueDiffSec(runTime, time.Now())) , "HTTP")
+  //LogHiddenWithDuration("http_PostJson", "", apiurl, string(body), I64_S(DateTimeValueDiffSec(runTime, time.Now())) , "Debug_HTTP")
 
   return body
 }
