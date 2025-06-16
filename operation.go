@@ -25,7 +25,7 @@ func Operation_IsLimitExceeded(username string, operation string, key string) bo
 
   result := !limiter.Allow()
   if result {
-    LogHidden(operation, username, key, "", "OperationLimitExceeded")
+    LogHidden("Operation_IsLimitExceeded", username, key, operation, "SECURITY_RISK")
   }
 
   return result
@@ -48,7 +48,7 @@ func Operation_IsLimitExceededBySec(username string, operation string, key strin
 
   result := !limiter.Allow()
   if result {
-    LogHidden(operation, username, key, "", "OperationLimitExceededBySec")
+    LogHidden("Operation_IsLimitExceededBySec", username, key, operation, "SECURITY_RISK")
   }
 
   return result
@@ -73,7 +73,7 @@ func Operation_IsLimitExceededBySecToken(username string, operation string, key 
 
   result := !limiter.Allow()
   if result {
-    LogHidden(operation, username, key, "", "Operation_IsLimitExceededBySecToken")
+    LogHidden("Operation_IsLimitExceededBySecToken", username, key, operation, "SECURITY_RISK")
   }
 
   return result
