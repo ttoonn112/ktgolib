@@ -4,6 +4,7 @@ import (
 	"os"
 	"fmt"
 	"time"
+	"strconv"
 	"github.com/ziutek/mymysql/mysql"			// Mysql
 	_ "github.com/ziutek/mymysql/native" 	// Mysql Native engine
 )
@@ -93,7 +94,7 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 	}
 
 	if DateTimeValueDiff(runTime, time.Now()) > 30 {
-		LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+		LogHiddenWithDuration("Query", "", "", sql, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -190,7 +191,7 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	}
 
 	if DateTimeValueDiff(runTime, time.Now()) > 30 {
-		LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+		LogHiddenWithDuration("trans.Query", "", "", sql, I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -238,4 +239,8 @@ func LogWithDuration(operation string, username string, key string, msg string, 
 func DateTimeValueDiff(t1 time.Time, t2 time.Time) int64{
 	diff := t2.Sub(t1)
 	return int64(diff/1000/time.Millisecond)
-  }
+}
+
+func I64_S(value int64) string {
+	return strconv.FormatInt(value, 10)
+}
