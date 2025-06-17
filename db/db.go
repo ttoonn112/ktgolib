@@ -57,6 +57,7 @@ func Execute(conn_name string, sql string) bool{
 }
 
 func Query(conn_name string, sql string) []map[string]interface{}{
+	runTime := time.Now()
   db := Open(conn_name)
 	defer func() {
     Close(conn_name, db)
@@ -89,6 +90,10 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 		if res, err = res.NextResult(); err != nil {
 			return records
 		}
+	}
+
+	if lib.DateTimeValueDiff(runTime, time.Now()) > 30 {
+		lib.LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -148,6 +153,8 @@ func (trans *Transaction) Execute(sql string) {
 
 func (trans *Transaction) Query(sql string) []map[string]interface{} {
 
+	runTime := time.Now()
+
 	sel, err := trans.conn.Prepare(sql)
   if err != nil {
     Log("trans.Query (Prepare)", "", err.Error(), sql, "DB_ERROR")
@@ -180,6 +187,10 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 		if res, err = res.NextResult(); err != nil {
 			return records
 		}
+	}
+
+	if lib.DateTimeValueDiff(runTime, time.Now()) > 30 {
+		lib.LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
