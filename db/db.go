@@ -92,8 +92,8 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 		}
 	}
 
-	if lib.DateTimeValueDiff(runTime, time.Now()) > 30 {
-		lib.LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+	if DateTimeValueDiff(runTime, time.Now()) > 30 {
+		LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -189,8 +189,8 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 		}
 	}
 
-	if lib.DateTimeValueDiff(runTime, time.Now()) > 30 {
-		lib.LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+	if DateTimeValueDiff(runTime, time.Now()) > 30 {
+		LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -226,3 +226,16 @@ func Log(operation string, username string, key string, msg string, logfilename 
 func LogHidden(operation string, username string, key string, msg string, logfilename string){
 	writeLog(operation, username, key, msg, "", logfilename, false)
 }
+
+func LogHiddenWithDuration(operation string, username string, key string, msg string, duration string, logfilename string){
+	writeLog(operation, username, key, msg, duration, logfilename, false)
+}
+
+func LogWithDuration(operation string, username string, key string, msg string, duration string, logfilename string){
+	writeLog(operation, username, key, msg, duration, logfilename, true)
+}
+
+func DateTimeValueDiff(t1 time.Time, t2 time.Time) int64{
+	diff := t2.Sub(t1)
+	return int64(diff/1000/time.Millisecond)
+  }
