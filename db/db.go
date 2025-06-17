@@ -93,7 +93,7 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 	}
 
 	if DateTimeValueDiff(runTime, time.Now()) > 30 {
-		LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+		LogHiddenWithDuration("Query", "", "", sql, lib.I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
@@ -190,7 +190,7 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	}
 
 	if DateTimeValueDiff(runTime, time.Now()) > 30 {
-		LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(lib.DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
+		LogHiddenWithDuration("trans.Query", "", "", sql, lib.I64_S(DateTimeValueDiff(runTime, time.Now()))+"s", "DB_SLOWQUERY")
 	}
 
 	return records
