@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 	"strings"
+	"fmt"
 )
 
 func Now() string {
@@ -210,4 +211,42 @@ func GetSecondFromHHmmss(s string) (int, error) {
 		return 0, err
 	}
 	return t.Hour()*3600 + t.Minute()*60 + t.Second(), nil
+}
+
+func FormatDuration(seconds int) string {
+	days := seconds / 86400
+	seconds %= 86400
+
+	hours := seconds / 3600
+	seconds %= 3600
+
+	minutes := seconds / 60
+	seconds %= 60
+
+	result := ""
+
+	switch {
+	case days > 0:
+		result += fmt.Sprintf("%d วัน", days)
+		if hours > 0 {
+			result += fmt.Sprintf(" %d ชม.", hours)
+		}
+
+	case hours > 0:
+		result += fmt.Sprintf("%d ชม.", hours)
+		if minutes > 0 {
+			result += fmt.Sprintf(" %d น.", minutes)
+		}
+
+	case minutes > 0:
+		result += fmt.Sprintf("%d น.", minutes)
+		if seconds > 0 {
+			result += fmt.Sprintf(" %d วิ", seconds)
+		}
+
+	default:
+		result += fmt.Sprintf("%d วิ", seconds)
+	}
+
+	return result
 }
