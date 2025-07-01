@@ -111,7 +111,7 @@ func SI64(m map[string]interface{}, k string) int64 {
 	return S_I64(MapVStr(m, k, ""))
 }
 
-func SI(m map[string]interface{}, k string) int64 {
+func SI(m map[string]interface{}, k string) int {
 	return S_I(MapVStr(m, k, ""))
 }
 
