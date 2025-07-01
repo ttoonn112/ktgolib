@@ -203,3 +203,11 @@ func GetTimeHourFromSecond(s int64) string{
 	minStr = minStr[len(minStr)-2:]
 	return hourStr+":"+minStr
 }
+
+func GetSecondFromHHmmss(s string) (int, error) {
+	t, err := time.Parse("15:04:05", s)
+	if err != nil {
+		return 0, err
+	}
+	return t.Hour()*3600 + t.Minute()*60 + t.Second(), nil
+}
