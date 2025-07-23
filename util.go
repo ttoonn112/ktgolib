@@ -117,6 +117,10 @@ func HasIncludes(arr1 []string, arr2 []string) bool{
 	return false
 }
 
+func IsOverlap(start1, end1, start2, end2 string) bool {
+	return start1 <= end2 && start2 <= end1
+}
+
 // ไม่สามารถใช้ร่วมกับการ return ค่า กรณี TryCatch จับการ Error ได้
 func TryCatch(callback func(errStr string)) {
     if r := recover(); r != nil {
