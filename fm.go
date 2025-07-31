@@ -175,7 +175,7 @@ func ZeroString(value int64, numberOfZero int) string {
   return thestr[len(thestr) - numberOfZero:]
 }
 
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@!*.+_-"
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@!*.+_-,"
 func GenerateRandomString(n int) string {		//RandASCIIBytes
 	var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 	b := make([]byte, n)
