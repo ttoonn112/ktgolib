@@ -130,6 +130,8 @@ func DateTimeFormat(dtstr string, format string, lang string) string{
 			if datestr == "00/00/00" {datestr = ""}
 		case "enDBDateTime", "thDBDateTime":
 			datestr = syear+"-"+smonth+"-"+sday+" "+shour+":"+smin+":"+ssec
+		case "enISO8601", "thISO8601":
+			datestr = syear+"-"+smonth+"-"+sday+"T"+shour+":"+smin+":"+ssec+"Z"
 		case "enDBDate", "thDBDate":
 			datestr = syear+"-"+smonth+"-"+sday
 		case "enTime", "thTime":
