@@ -82,6 +82,28 @@ func DateDiff(less string, more string) int64{
   return DateTimeDiff(less+" 00:00:00", more+" 00:00:00")/(3600 * 24)
 }
 
+// แปลงจาก "YYYY-MM-DD HH:MM:SS" (ตีความเป็นเวลาโซนของเครื่อง) -> UTC/ISO8601 (RFC3339)
+func ToRFC3339(src string) string {
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", src, time.Local) // ใช้โซนของเครื่อง
+	if err != nil {
+		return "INVALID"
+	}
+	return t.UTC().Format(time.RFC3339) // ออกเป็น UTC เสมอ
+}
+
+// แปลงจาก UTC/ISO8601 (RFC3339) -> "YYYY-MM-DD HH:MM:SS" (ฟอร์แมตตามโซนของเครื่อง)
+func FromRFC3339(src string) string {
+	// ลอง parse แบบ RFC3339 หากไม่ผ่านจะลอง RFC3339Nano เผื่อมี nanoseconds
+	t, err := time.Parse(time.RFC3339, src)
+	if err != nil {
+		t, err = time.Parse(time.RFC3339Nano, src)
+		if err != nil {
+			return "INVALID"
+		}
+	}
+	return t.In(time.Local).Format("2006-01-02 15:04:05") // แสดงตามโซนของเครื่อง
+}
+
 func DateTimeFormat(dtstr string, format string, lang string) string{
 	if len(dtstr) != 10 && len(dtstr) != 19 && len(dtstr) != 16 {return ""}
 	if lang == "" {lang = "en"}
@@ -130,8 +152,6 @@ func DateTimeFormat(dtstr string, format string, lang string) string{
 			if datestr == "00/00/00" {datestr = ""}
 		case "enDBDateTime", "thDBDateTime":
 			datestr = syear+"-"+smonth+"-"+sday+" "+shour+":"+smin+":"+ssec
-		case "enISO8601", "thISO8601":
-			datestr = syear+"-"+smonth+"-"+sday+"T"+shour+":"+smin+":"+ssec+"Z"
 		case "enDBDate", "thDBDate":
 			datestr = syear+"-"+smonth+"-"+sday
 		case "enTime", "thTime":
