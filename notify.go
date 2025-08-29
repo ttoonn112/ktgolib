@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 /*
@@ -58,6 +59,39 @@ func Notify_ToTelegramWithHTML(botToken string, chatID int64, message string) er
 		return err
 	}
 	return nil
+}
+
+// ถ้า video == "" -> ส่งข้อความ HTML ปกติ
+// ถ้า video != "" -> ส่ง Video พร้อม Caption (HTML)
+func Notify_ToTelegramWithHTMLAndVideo(botToken string, chatID int64, messageHTML string, video string) error {
+	bot, err := tgbotapi.NewBotAPI(botToken)
+	if err != nil {
+		return err
+	}
+
+	// ถ้าไม่ได้แนบวิดีโอ -> ส่งข้อความปกติ
+	if strings.TrimSpace(video) == "" {
+		msg := tgbotapi.NewMessage(chatID, messageHTML)
+		msg.ParseMode = tgbotapi.ModeHTML
+		msg.DisableWebPagePreview = true // ค่า default คือ false (ให้โชว์ preview link)
+		_, err = bot.Send(msg)
+		return err
+	}
+
+	// ถ้ามีวิดีโอ -> ส่งเป็น Video พร้อม caption
+	var v tgbotapi.VideoConfig
+	if strings.HasPrefix(video, "http://") || strings.HasPrefix(video, "https://") {
+		v = tgbotapi.NewVideo(chatID, tgbotapi.FileURL(video))
+	} else {
+		v = tgbotapi.NewVideo(chatID, tgbotapi.FilePath(video))
+	}
+
+	v.Caption = messageHTML
+	v.ParseMode = tgbotapi.ModeHTML
+	v.SupportsStreaming = true
+
+	_, err = bot.Send(v)
+	return err
 }
 
 func Notify_WebhookLog(webhookURL string, botToken string, chatID int64, message string) (err error) {
