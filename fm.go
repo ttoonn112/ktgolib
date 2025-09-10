@@ -209,3 +209,8 @@ func IsLetterOnly(s string) bool {
    }
    return true
 }
+
+func hasRegexSpecialChars(s string) bool {
+	re := regexp.MustCompile(`[.*+?^${}()|\[\]\\]`)
+	return re.MatchString(s)
+}
