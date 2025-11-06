@@ -80,6 +80,13 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 				record[field.Name] = row.Int64(res.Map(field.Name))
 			case 0x4, 0x5:					//float, double
 				record[field.Name] = row.Float(res.Map(field.Name))
+			case 0xf5:						// ✅ JSON type
+				raw := row.Str(res.Map(field.Name))
+				if raw != "" {
+					record[field.Name] = json.RawMessage(raw)
+				} else {
+					record[field.Name] = json.RawMessage(`null`)
+				}
 			default:
 				record[field.Name] = row.Str(res.Map(field.Name))
 			}
@@ -177,6 +184,13 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 				record[field.Name] = row.Int64(res.Map(field.Name))
 			case 0x4, 0x5:					//float, double
 				record[field.Name] = row.Float(res.Map(field.Name))
+			case 0xf5:						// ✅ JSON type
+				raw := row.Str(res.Map(field.Name))
+				if raw != "" {
+					record[field.Name] = json.RawMessage(raw)
+				} else {
+					record[field.Name] = json.RawMessage(`null`)
+				}
 			default:
 				record[field.Name] = row.Str(res.Map(field.Name))
 			}

@@ -338,12 +338,21 @@ func CsvRead(filename string, limit int) ([]map[string]interface{}, error) {
 	return results, nil
 }
 
-func Println(object interface{}){
-	pretty.Println(object)
+// พิมพ์หลายค่าในบรรทัดเดียว (พร้อม pretty print)
+func Println(a ...interface{}) {
+	for _, v := range a {
+		pretty.Print(v)
+		fmt.Print(" ") // เว้นช่องเหมือน fmt.Println
+	}
+	fmt.Println()
 }
 
-func Print(object interface{}){
-	pretty.Print(object)
+// พิมพ์แบบต่อเนื่อง (ไม่ขึ้นบรรทัดใหม่)
+func Print(a ...interface{}) {
+	for _, v := range a {
+		pretty.Print(v)
+		fmt.Print(" ")
+	}
 }
 
 
