@@ -180,6 +180,7 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	for _, row := range rows {
 		record := make(map[string]interface{})
 		for _,field := range res.Fields() {
+			fmt.Prinln(field.Name, field.Type)
 			switch field.Type {
 			case 0x1, 0x3, 0x8:			//tinyint, int, bigint
 				record[field.Name] = row.Int64(res.Map(field.Name))
