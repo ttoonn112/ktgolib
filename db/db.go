@@ -60,7 +60,7 @@ func Execute(conn_name string, sql string) bool{
 
 func Query(conn_name string, sql string) []map[string]interface{}{
 	runTime := time.Now()
-  db := Open(conn_name)
+  	db := Open(conn_name)
 	defer func() {
     Close(conn_name, db)
 	}()
@@ -69,13 +69,14 @@ func Query(conn_name string, sql string) []map[string]interface{}{
 
 	rows, res, err := db.Query(sql)
 	if err != nil {
-    Log("db.Query", conn_name, err.Error(), sql, "DB_ERROR")
-    panic("error.DBOperationFailed")
-  }
+		Log("db.Query", conn_name, err.Error(), sql, "DB_ERROR")
+		panic("error.DBOperationFailed")
+	}
 
 	for _, row := range rows {
 		record := make(map[string]interface{})
 		for _,field := range res.Fields() {
+			fmt.Println(field.Name, field.Type)
 			switch field.Type {
 			case 0x1, 0x3, 0x8:			//tinyint, int, bigint
 				record[field.Name] = row.Int64(res.Map(field.Name))
@@ -180,7 +181,6 @@ func (trans *Transaction) Query(sql string) []map[string]interface{} {
 	for _, row := range rows {
 		record := make(map[string]interface{})
 		for _,field := range res.Fields() {
-			fmt.Prinln(field.Name, field.Type)
 			switch field.Type {
 			case 0x1, 0x3, 0x8:			//tinyint, int, bigint
 				record[field.Name] = row.Int64(res.Map(field.Name))
