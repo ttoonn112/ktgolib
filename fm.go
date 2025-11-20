@@ -196,7 +196,7 @@ func GenerateRandomNumberString(n int) string {
 }
 
 func DoLetterOnly(str_ string) string{
-	reg, err := regexp.Compile("[^a-zA-Z0-9]$@!*.+_-")
+	reg, err := regexp.Compile("[^a-zA-Z0-9]$@!*.+_-,")
   if err != nil {return str_}
 	return reg.ReplaceAllString(str_, "")
 }
