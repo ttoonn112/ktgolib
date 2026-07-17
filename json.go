@@ -50,6 +50,8 @@ func Extract(str string) map[string]interface{}{
   return record
 }
 
+// ถอด sentinel ทุก string field เหมือน Extract — ไม่งั้น '/"/&/newline/backslash ใน array element
+// จะโผล่เป็น &#39;/#DQ#/u0026/#NL#/#BS# ให้ผู้ใช้เห็น (encode ผ่าน CompressArray แต่เดิมไม่มีตัวถอด)
 func ExtractArray(str string) []map[string]interface{}{
   str = strings.Map(func(r rune) rune {
       if unicode.IsPrint(r) {
@@ -59,6 +61,13 @@ func ExtractArray(str string) []map[string]interface{}{
   }, str)
   var obj []map[string]interface{}
   if err := json.Unmarshal([]byte(str), &obj); err == nil {
+    for _, row := range obj {
+      for k, v := range row {
+        if _, ok := v.(string); ok {
+          row[k] = UncloseText(T(row, k))
+        }
+      }
+    }
     return obj
   }
   return nil

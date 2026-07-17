@@ -99,6 +99,36 @@ func TestUncloseTextOldDataFormat(t *testing.T) {
 	}
 }
 
+// CompressArray -> ExtractArray ต้อง round-trip ได้ (array path — เดิม ExtractArray ไม่ถอด sentinel)
+func TestCompressExtractArrayRoundTrip(t *testing.T) {
+	for _, c := range roundTripCases {
+		t.Run(c.name, func(t *testing.T) {
+			arr := []map[string]interface{}{{"name": c.val}}
+			out := ExtractArray(CompressArray(arr))
+			if out == nil || len(out) == 0 {
+				t.Fatalf("ExtractArray คืน nil/ว่าง สำหรับ input %q (array หาย)", c.val)
+			}
+			if got := T(out[0], "name"); got != c.val {
+				t.Errorf("array round-trip เพี้ยน\n input = %q\n got   = %q", c.val, got)
+			}
+		})
+	}
+}
+
+// backward compat: array data เก่า (sentinel ยังไม่ถอด) ต้องอ่านได้ถูกหลัง fix
+func TestExtractArrayOldDataFormat(t *testing.T) {
+	out := ExtractArray(`[{"name":"A u0026 B SERVICE"},{"name":"Ou0026#39;Brien"}]`)
+	if len(out) != 2 {
+		t.Fatalf("ต้องได้ 2 element, ได้ %d", len(out))
+	}
+	if got := T(out[0], "name"); got != "A & B SERVICE" {
+		t.Errorf("array data เก่าเพี้ยน: ได้ %q ต้องได้ %q", got, "A & B SERVICE")
+	}
+	if got := T(out[1], "name"); got != "O'Brien" {
+		t.Errorf("array data เก่าเพี้ยน: ได้ %q ต้องได้ %q", got, "O'Brien")
+	}
+}
+
 // SqlStr ต้อง escape อักขระที่ทำ SQL พังครบ
 func TestSqlStr(t *testing.T) {
 	cases := []struct{ in, want string }{
