@@ -6,8 +6,10 @@ import (
 	"encoding/json"
 )
 
+// เข้ารหัสอักขระที่ทำ SQL string literal พัง ให้เป็น sentinel — ถอดกลับด้วย UncloseText
+// backslash ต้องมาก่อนตัวอื่น (mirror กับ UncloseText ที่ถอด #BS# ท้ายสุด)
 func EncloseText(src string) string{
-  s1 := strings.Replace(strings.Replace(strings.Replace(strings.Replace(src,"\r\n","\n",-1),"\n","#NL#",-1),"'","&#39;",-1),`"`,"#DQ#",-1)
+  s1 := strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(src,`\`,"#BS#",-1),"\r\n","\n",-1),"\n","#NL#",-1),"'","&#39;",-1),`"`,"#DQ#",-1)
 	s1 = strings.Map(func(r rune) rune {
       if unicode.IsPrint(r) {
           return r
@@ -17,8 +19,10 @@ func EncloseText(src string) string{
 	return s1
 }
 
+// ถอดรหัสจาก EncloseText — #BS# ต้องท้ายสุด (mirror กับ EncloseText ที่เข้ารหัส backslash ก่อน)
+// u0026 = ร่องรอยของ data เก่าที่ & ถูก MySQL กิน backslash ไป ยังต้องรองรับต่อไป
 func UncloseText(src string) string{
-  str := strings.Replace( strings.Replace(strings.Replace(strings.Replace(src,"#NL#","\n",-1),"u0026","&",-1) ,"&#39;",`'`,-1) ,"#DQ#",`"`,-1)
+  str := strings.Replace( strings.Replace( strings.Replace(strings.Replace(strings.Replace(src,"#NL#","\n",-1),"u0026","&",-1) ,"&#39;",`'`,-1) ,"#DQ#",`"`,-1) ,"#BS#",`\`,-1)
   return str
 }
 
