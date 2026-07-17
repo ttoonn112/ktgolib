@@ -116,9 +116,17 @@ func RawStringToPureASCII(src string) string{
   return s1
 }
 
+// key ที่ห้ามโผล่ใน log — MapToString ใช้เฉพาะสร้าง log string จึง redact ตรงนี้ได้
+// (T-002: กัน password/setup_password หลุดลง log ไฟล์+stdout ทุก request)
+var logRedactKeys = map[string]bool{"password": true, "setup_password": true}
+
 func MapToString(payload map[string]interface{}) string{
   fields := map[string]interface{}{}
   for key, v := range payload {
+    if logRedactKeys[key] && v != nil && v != "" {
+      fields[key] = "***"
+      continue
+    }
     switch value := v.(type) {
      case string:
         fields[key] = RawStringToPureASCII(T(payload,key))
