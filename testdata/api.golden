@@ -1,0 +1,112 @@
+# รายชื่อฟังก์ชันสาธารณะที่ consumer เรียกได้ — ห้ามลบ/เปลี่ยนชื่อ/เปลี่ยนพารามิเตอร์
+# เพิ่มฟังก์ชันใหม่ = เพิ่มบรรทัดที่นี่ (อนุญาต) · สร้างใหม่: KTGOLIB_WRITE_GOLDEN=1 go test
+AddDate(datestr string, day int) string
+AddSqlDateRangeFilter(field_name string, start_date string, end_date string) string
+AddSqlFilter(field_name string, value string) string
+AddSqlLikeFilter(field_name string, value string) string
+AddSqlLikePrefixFilter(field_name string, value string) string
+AddSqlLikeSuffixFilter(field_name string, value string) string
+AddSqlMultipleFilter(field_name string, value string) string
+AddSqlNotInMultipleFilter(field_name string, value string) string
+ArrayOfMapToString(payload []map[string]interface{}) string
+Attempt(operation interface{}, maxAttempts int, delaySec int, params ...interface{}) string
+Compress(payload map[string]interface{}) string
+CompressArray(payload []map[string]interface{}) string
+CompressRaw(payload map[string]interface{}) string
+CopyMap(m map[string]interface{}) map[string]interface{}
+CsvLog(headers []string, row map[string]interface{}, filename string) error
+CsvRead(filename string, limit int) ([]map[string]interface{}, error)
+DateDiff(less string, more string) int64
+DateTimeAddString(datestr string, sec int) string
+DateTimeAddYMDString(datestr string, year int, month int, day int) string
+DateTimeDiff(less string, more string) int64
+DateTimeFormat(dtstr string, format string, lang string) string
+DateTimeString(t time.Time) string
+DateTimeValue(datestr string) (time.Time, error)
+DateTimeValueDiff(t1 time.Time, t2 time.Time) int64
+DateTimeValueDiffSec(less time.Time, more time.Time) int64
+DivMod(x, y int64) (int64, int64)
+DoLetterOnly(str_ string) string
+EncloseText(src string) string
+Extract(str string) map[string]interface{}
+ExtractArray(str string) []map[string]interface{}
+F64_S(value float64, decimal int) string
+F64_S_AUTO(value float64) string
+FirstXChar(str string, num int) string
+FormatDuration(seconds int) string
+FormatNumber(num float64, precision int, showzero bool) string
+FromRFC3339(src string) string
+GenerateRandomNumberString(n int) string
+GenerateRandomString(n int) string
+GetMask(mapData map[string]interface{}, keyArr []string) map[string]interface{}
+GetSecondFromHHmmss(s string) (int, error)
+GetSqlMultipleFilter(value string) string
+GetTimeHourFromSecond(s int64) string
+GetTimeHourFromSecondNoBlank(s int64) string
+Has(m map[string]interface{}, key string) bool
+HasIncludes(arr1 []string, arr2 []string) bool
+HasRegexSpecialChars(s string) bool
+Http_Get(apiurl string) map[string]interface{}
+Http_PostForm(apiurl string, data url.Values) []map[string]interface{}
+Http_PostFormWithHeader(apiurl string, headers map[string]string, data url.Values) string
+Http_PostJson(apiurl string, data map[string]interface{}) map[string]interface{}
+I32_S(value int32) string
+I64_S(value int64) string
+I_S(value int) string
+Includes(arr1_str string, arr2_str string, sep string) bool
+IsLetterOnly(s string) bool
+IsOverlap(start1, end1, start2, end2 string) bool
+LastXChar(str string, num int) string
+ListReverse(arr []map[string]interface{}) []map[string]interface{}
+ListSort(list []map[string]interface{}, key string, sortType string) []map[string]interface{}
+ListSortNumber(list []map[string]interface{}, key string, sortType string) []map[string]interface{}
+ListToArrayOfArraySortByKey(list []map[string]interface{}, groupKey string, sortKey string, sortType string) [][]map[string]interface{}
+ListToMap(records []map[string]interface{}, unique_code string) map[string]map[string]interface{}
+ListToMapOfArray(arr []map[string]interface{}, code string) map[string][]map[string]interface{}
+Log(operation string, username string, key string, msg string, logfilename string)
+LogHidden(operation string, username string, key string, msg string, logfilename string)
+LogHiddenWithDuration(operation string, username string, key string, msg string, duration string, logfilename string)
+LogWithDuration(operation string, username string, key string, msg string, duration string, logfilename string)
+M(m map[string]interface{}, k string) map[string]interface{}
+MapOfArrayToList(olist map[string][]map[string]interface{}) []map[string]interface{}
+MapOfArrayToSortedArrayOfArray(slist map[string][]map[string]interface{}) [][]map[string]interface{}
+MapToList(olist map[string]map[string]interface{}) []map[string]interface{}
+MapToSortList(olist map[string]map[string]interface{}, key1 string, key2 string, key3 string) []map[string]interface{}
+MapToString(payload map[string]interface{}) string
+MapToToSortListByKey(olist map[string]map[string]interface{}) []map[string]interface{}
+MapVStr(m map[string]interface{}, k string, default_value interface{}) string
+Median(data []float64) float64
+NObj(m map[string]map[string]interface{}, k1 string, k2 string) string
+NextDate(day int) string
+Notify_ToTelegram(botToken string, chatID int64, message string) error
+Notify_ToTelegramWithHTML(botToken string, chatID int64, message string) error
+Notify_ToTelegramWithHTMLAndVideo(botToken string, chatID int64, messageHTML string, video string) error
+Notify_WebhookLog(webhookURL string, botToken string, chatID int64, message string) (err error)
+Now() string
+NowDate() string
+OC(condition bool, a string, b string) string
+Operation_IsLimitExceeded(username string, operation string, key string) bool
+Operation_IsLimitExceededBySec(username string, operation string, key string, sec int) bool
+Operation_IsLimitExceededBySecToken(username string, operation string, key string, sec int, burst int) bool
+Print(a ...interface{})
+Println(a ...interface{})
+RawStringToPureASCII(src string) string
+Round(num float64) int
+RoundToInt64(num float64) int64
+SF64(m map[string]interface{}, k string) float64
+SI(m map[string]interface{}, k string) int
+SI64(m map[string]interface{}, k string) int64
+S_F64(str string) float64
+S_I(str string) int
+S_I32(str string) int32
+S_I64(str string) int64
+SortedListToArrayOfArray(slist []map[string]interface{}, groupKey string) [][]map[string]interface{}
+SqlStr(value string) string
+StartScheduleTask(repeatsec uint64, runfirst bool, task scheduletask)
+StartTask(nextsec uint64, task scheduletask)
+T(m map[string]interface{}, k string) string
+ToFixed(num float64, precision int) float64
+ToRFC3339(src string) string
+TryCatch(callback func(errStr string))
+UncloseText(src string) string
+ZeroString(value int64, numberOfZero int) string

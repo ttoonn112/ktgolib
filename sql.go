@@ -3,6 +3,17 @@ package ktgolib
 // Shortcut Function
 // ใช้งานเพื่อให้ Code สั้นลง
 
+// 🔴 เปลี่ยนพฤติกรรมเมื่อ 2026-07-16 (commit 6d035ea) — ชื่อฟังก์ชันและ signature เหมือนเดิม
+//
+// AddSql* ทุกตัวในไฟล์นี้ escape ค่าให้เองด้วย SqlStr แล้ว (ก่อนหน้านั้นต่อค่าดิบเข้า literal ตรง ๆ)
+// ผู้เรียก: ส่งค่าดิบจาก payload เข้ามาได้เลย — **ห้าม escape มาก่อน** จะกลายเป็น escape สองชั้น
+// ค่าที่มี ' จะถูกบันทึก/ค้นหาเพี้ยน โดยที่ build ผ่าน เทสอื่นผ่าน ไม่มีอะไรฟ้อง
+//
+// repo ที่ปักเวอร์ชันก่อน 6d035ea แล้วหุ้ม AddSql* ไว้เองกัน injection (besttransport, smartfarmservice)
+// ต้องถอดตัวหุ้มออกตอน bump — ทั้งสอง repo มีเทสที่ล้มพร้อมข้อความเตือนไว้แล้ว
+//
+// consumer pin version เอง → repo ที่ยังไม่ bump ไม่กระทบ
+
 import (
 	"strings"
 )

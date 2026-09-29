@@ -1,0 +1,357 @@
+# ผลลัพธ์ที่ถูกล็อกไว้ของทุกฟังก์ชันที่ consumer เรียกใช้ — ห้ามแก้ด้วยมือ
+# เปลี่ยนบรรทัดใดบรรทัดหนึ่ง = เปลี่ยนพฤติกรรมของไลบรารีที่ 16 repo ใช้ร่วมกัน
+# สร้างใหม่: KTGOLIB_WRITE_GOLDEN=1 go test -run TestBehaviorLocked
+AddDate/minus	"2026-02-28"
+AddDate/plus	"2026-10-03"
+AddSqlDateRangeFilter/all	" and A.d between '2026-01-01' and 'All' "
+AddSqlDateRangeFilter/amp	" and A.d between '2026-01-01' and 'A & B' "
+AddSqlDateRangeFilter/attack	" and A.d between '2026-01-01' and 'x\\' or 1=1 --' "
+AddSqlDateRangeFilter/backslash	" and A.d between '2026-01-01' and 'C:\\\\new' "
+AddSqlDateRangeFilter/bs_end	" and A.d between '2026-01-01' and 'path\\\\' "
+AddSqlDateRangeFilter/dquote	" and A.d between '2026-01-01' and 'say \\\"hi\\\"' "
+AddSqlDateRangeFilter/empty	""
+AddSqlDateRangeFilter/multi	" and A.d between '2026-01-01' and 'A|N' "
+AddSqlDateRangeFilter/newline	" and A.d between '2026-01-01' and 'line1\\nline2' "
+AddSqlDateRangeFilter/normal	" and A.d between '2026-01-01' and '2026-12-31' "
+AddSqlDateRangeFilter/plain	" and A.d between '2026-01-01' and 'สมชาย' "
+AddSqlDateRangeFilter/quote	" and A.d between '2026-01-01' and 'O\\'Brien' "
+AddSqlDateRangeFilter/sentinel	" and A.d between '2026-01-01' and 'ราคา u0026 ส่วนลด' "
+AddSqlDateRangeFilter/zerodate	""
+AddSqlFilter/all	""
+AddSqlFilter/amp	" and A.col = 'A & B' "
+AddSqlFilter/attack	" and A.col = 'x\\' or 1=1 --' "
+AddSqlFilter/backslash	" and A.col = 'C:\\\\new' "
+AddSqlFilter/bs_end	" and A.col = 'path\\\\' "
+AddSqlFilter/dquote	" and A.col = 'say \\\"hi\\\"' "
+AddSqlFilter/empty	""
+AddSqlFilter/multi	" and A.col = 'A|N' "
+AddSqlFilter/newline	" and A.col = 'line1\\nline2' "
+AddSqlFilter/plain	" and A.col = 'สมชาย' "
+AddSqlFilter/quote	" and A.col = 'O\\'Brien' "
+AddSqlFilter/sentinel	" and A.col = 'ราคา u0026 ส่วนลด' "
+AddSqlLikeFilter/all	""
+AddSqlLikeFilter/amp	" and A.col like '%A & B%' "
+AddSqlLikeFilter/attack	" and A.col like '%x\\' or 1=1 --%' "
+AddSqlLikeFilter/backslash	" and A.col like '%C:\\\\new%' "
+AddSqlLikeFilter/bs_end	" and A.col like '%path\\\\%' "
+AddSqlLikeFilter/dquote	" and A.col like '%say \\\"hi\\\"%' "
+AddSqlLikeFilter/empty	""
+AddSqlLikeFilter/multi	" and A.col like '%A|N%' "
+AddSqlLikeFilter/newline	" and A.col like '%line1\\nline2%' "
+AddSqlLikeFilter/plain	" and A.col like '%สมชาย%' "
+AddSqlLikeFilter/quote	" and A.col like '%O\\'Brien%' "
+AddSqlLikeFilter/sentinel	" and A.col like '%ราคา u0026 ส่วนลด%' "
+AddSqlLikePrefixFilter/all	""
+AddSqlLikePrefixFilter/amp	" and A.col like '%A & B' "
+AddSqlLikePrefixFilter/attack	" and A.col like '%x\\' or 1=1 --' "
+AddSqlLikePrefixFilter/backslash	" and A.col like '%C:\\\\new' "
+AddSqlLikePrefixFilter/bs_end	" and A.col like '%path\\\\' "
+AddSqlLikePrefixFilter/dquote	" and A.col like '%say \\\"hi\\\"' "
+AddSqlLikePrefixFilter/empty	""
+AddSqlLikePrefixFilter/multi	" and A.col like '%A|N' "
+AddSqlLikePrefixFilter/newline	" and A.col like '%line1\\nline2' "
+AddSqlLikePrefixFilter/plain	" and A.col like '%สมชาย' "
+AddSqlLikePrefixFilter/quote	" and A.col like '%O\\'Brien' "
+AddSqlLikePrefixFilter/sentinel	" and A.col like '%ราคา u0026 ส่วนลด' "
+AddSqlLikeSuffixFilter/all	""
+AddSqlLikeSuffixFilter/amp	" and A.col like 'A & B%' "
+AddSqlLikeSuffixFilter/attack	" and A.col like 'x\\' or 1=1 --%' "
+AddSqlLikeSuffixFilter/backslash	" and A.col like 'C:\\\\new%' "
+AddSqlLikeSuffixFilter/bs_end	" and A.col like 'path\\\\%' "
+AddSqlLikeSuffixFilter/dquote	" and A.col like 'say \\\"hi\\\"%' "
+AddSqlLikeSuffixFilter/empty	""
+AddSqlLikeSuffixFilter/multi	" and A.col like 'A|N%' "
+AddSqlLikeSuffixFilter/newline	" and A.col like 'line1\\nline2%' "
+AddSqlLikeSuffixFilter/plain	" and A.col like 'สมชาย%' "
+AddSqlLikeSuffixFilter/quote	" and A.col like 'O\\'Brien%' "
+AddSqlLikeSuffixFilter/sentinel	" and A.col like 'ราคา u0026 ส่วนลด%' "
+AddSqlMultipleFilter/all	""
+AddSqlMultipleFilter/amp	" and A.col in ('A & B')"
+AddSqlMultipleFilter/attack	" and A.col in ('x\\' or 1=1 --')"
+AddSqlMultipleFilter/backslash	" and A.col in ('C:\\\\new')"
+AddSqlMultipleFilter/bs_end	" and A.col in ('path\\\\')"
+AddSqlMultipleFilter/dquote	" and A.col in ('say \\\"hi\\\"')"
+AddSqlMultipleFilter/empty	""
+AddSqlMultipleFilter/multi	" and A.col in ('A','N')"
+AddSqlMultipleFilter/newline	" and A.col in ('line1\\nline2')"
+AddSqlMultipleFilter/plain	" and A.col in ('สมชาย')"
+AddSqlMultipleFilter/quote	" and A.col in ('O\\'Brien')"
+AddSqlMultipleFilter/sentinel	" and A.col in ('ราคา u0026 ส่วนลด')"
+AddSqlNotInMultipleFilter/all	""
+AddSqlNotInMultipleFilter/amp	" and A.col not in ('A & B')"
+AddSqlNotInMultipleFilter/attack	" and A.col not in ('x\\' or 1=1 --')"
+AddSqlNotInMultipleFilter/backslash	" and A.col not in ('C:\\\\new')"
+AddSqlNotInMultipleFilter/bs_end	" and A.col not in ('path\\\\')"
+AddSqlNotInMultipleFilter/dquote	" and A.col not in ('say \\\"hi\\\"')"
+AddSqlNotInMultipleFilter/empty	""
+AddSqlNotInMultipleFilter/multi	" and A.col not in ('A','N')"
+AddSqlNotInMultipleFilter/newline	" and A.col not in ('line1\\nline2')"
+AddSqlNotInMultipleFilter/plain	" and A.col not in ('สมชาย')"
+AddSqlNotInMultipleFilter/quote	" and A.col not in ('O\\'Brien')"
+AddSqlNotInMultipleFilter/sentinel	" and A.col not in ('ราคา u0026 ส่วนลด')"
+ArrayOfMapToString/sample	"[{\"code\":\"b\",\"grp\":\"x\",\"n\":\"2\"},{\"code\":\"a\",\"grp\":\"x\",\"n\":\"10\"},{\"code\":\"c\",\"grp\":\"y\",\"n\":\"1\"}]"
+Compress/all	"{\"x\":\"All\"}"
+Compress/amp	"{\"x\":\"A \\u0026 B\"}"
+Compress/attack	"{\"x\":\"x\\u0026#39; or 1=1 --\"}"
+Compress/backslash	"{\"x\":\"C:#BS#new\"}"
+Compress/bs_end	"{\"x\":\"path#BS#\"}"
+Compress/dquote	"{\"x\":\"say #DQ#hi#DQ#\"}"
+Compress/empty	"{}"
+Compress/keyWithQuote	"{\"a'b\":\"x\"}"
+Compress/mixed	"{\"code\":\"C001\",\"flag\":true,\"name\":\"บริษัท ทดสอบ\",\"qty\":5,\"rate\":1.5}"
+Compress/multi	"{\"x\":\"A|N\"}"
+Compress/newline	"{\"x\":\"line1#NL#line2\"}"
+Compress/plain	"{\"x\":\"สมชาย\"}"
+Compress/quote	"{\"x\":\"O\\u0026#39;Brien\"}"
+Compress/sentinel	"{\"x\":\"ราคา u0026 ส่วนลด\"}"
+Compress/zeroValuesDropped	"{\"i\":0,\"keep\":\"v\"}"
+CompressArray/empty	""
+CompressArray/keyWithQuote	"[{\"a'b\":\"x\"}]"
+CompressRaw/all	"{\"x\":\"All\"}"
+CompressRaw/amp	"{\"x\":\"A \\u0026 B\"}"
+CompressRaw/attack	"{\"x\":\"x\\u0026#39; or 1=1 --\"}"
+CompressRaw/backslash	"{\"x\":\"C:#BS#new\"}"
+CompressRaw/bs_end	"{\"x\":\"path#BS#\"}"
+CompressRaw/dquote	"{\"x\":\"say #DQ#hi#DQ#\"}"
+CompressRaw/empty	"{}"
+CompressRaw/multi	"{\"x\":\"A|N\"}"
+CompressRaw/newline	"{\"x\":\"line1#NL#line2\"}"
+CompressRaw/plain	"{\"x\":\"สมชาย\"}"
+CompressRaw/quote	"{\"x\":\"O\\u0026#39;Brien\"}"
+CompressRaw/sentinel	"{\"x\":\"ราคา u0026 ส่วนลด\"}"
+CompressRaw/zeroValuesKept	"{\"f\":0,\"i\":0,\"keep\":\"v\"}"
+CopyMap/sample	{"code":"C001","flag":true,"name":"บริษัท ทดสอบ","none":null,"qty":5,"rate":1.5}
+DateDiff	27
+DateTimeAddString	"2026-09-28 10:31:30"
+DateTimeAddYMDString	"2027-12-01 10:30:00"
+DateTimeDiff	9000
+DateTimeFormat/date	""
+DateTimeFormat/datetime	""
+DateTimeFormat/en	""
+DateTimeFormat/invalid	""
+DateTimeFormat/timestamp	"20260928103000"
+DateTimeString	"2026-09-28 10:30:00"
+DateTimeValue/bad	false
+DateTimeValue/ok	["2026-09-28 10:30:00","true"]
+DateTimeValueDiff	5400
+DateTimeValueDiffSec	5400
+DivMod	[3,2]
+DoLetterOnly/all	"All"
+DoLetterOnly/amp	"A & B"
+DoLetterOnly/attack	"x' or 1=1 --"
+DoLetterOnly/backslash	"C:\\new"
+DoLetterOnly/bs_end	"path\\"
+DoLetterOnly/dquote	"say \"hi\""
+DoLetterOnly/empty	""
+DoLetterOnly/multi	"A|N"
+DoLetterOnly/newline	"line1\nline2"
+DoLetterOnly/plain	"สมชาย"
+DoLetterOnly/quote	"O'Brien"
+DoLetterOnly/sentinel	"ราคา u0026 ส่วนลด"
+EncloseText/all	"All"
+EncloseText/amp	"A & B"
+EncloseText/attack	"x&#39; or 1=1 --"
+EncloseText/backslash	"C:#BS#new"
+EncloseText/bs_end	"path#BS#"
+EncloseText/dquote	"say #DQ#hi#DQ#"
+EncloseText/empty	""
+EncloseText/multi	"A|N"
+EncloseText/newline	"line1#NL#line2"
+EncloseText/plain	"สมชาย"
+EncloseText/quote	"O&#39;Brien"
+EncloseText/sentinel	"ราคา u0026 ส่วนลด"
+Extract/invalidJson	{}
+Extract/legacyData	{"n":"A'B"}
+ExtractArray/invalidJson	null
+ExtractArray/legacyData	[{"n":"A \u0026 B"}]
+F64_S/2/-2.500000	"-2.50"
+F64_S/2/0.000000	"0.00"
+F64_S/2/1.005000	"1.00"
+F64_S/2/1000000.000000	"1000000.00"
+F64_S/2/1234.567800	"1234.57"
+F64_S/2/2.500000	"2.50"
+F64_S_AUTO/-2.500000	"-2.5"
+F64_S_AUTO/0.000000	"0"
+F64_S_AUTO/1.005000	"1.005"
+F64_S_AUTO/1000000.000000	"1000000"
+F64_S_AUTO/1234.567800	"1234.5678"
+F64_S_AUTO/2.500000	"2.5"
+FirstXChar/cut	"abc"
+FirstXChar/short	"abc"
+FormatDuration/secs	"1 ชม. 2 น."
+FormatDuration/zero	"0 วิ"
+FormatNumber/2/-2.500000	"-2.50"
+FormatNumber/2/0.000000	"0.00"
+FormatNumber/2/1.005000	"1.00"
+FormatNumber/2/1000000.000000	"1,000,000.00"
+FormatNumber/2/1234.567800	"1,234.57"
+FormatNumber/2/2.500000	"2.50"
+FormatNumber/noZero/-2.500000	"-2.50"
+FormatNumber/noZero/0.000000	""
+FormatNumber/noZero/1.005000	"1.00"
+FormatNumber/noZero/1000000.000000	"1,000,000.00"
+FormatNumber/noZero/1234.567800	"1,234.57"
+FormatNumber/noZero/2.500000	"2.50"
+FromRFC3339	"2026-09-28 10:30:00"
+GetMask/array	{"rows":[{"k":"v"}]}
+GetMask/plain	{"code":"C001","qty":5}
+GetMask/prefix	{"info":{"a":"1","b":"2"}}
+GetMask/prefixQuoteKey	{"info":{"a'b":"1"}}
+GetSecondFromHHmmss	["3725","true"]
+GetSqlMultipleFilter/all	""
+GetSqlMultipleFilter/amp	"('A & B')"
+GetSqlMultipleFilter/attack	"('x\\' or 1=1 --')"
+GetSqlMultipleFilter/backslash	"('C:\\\\new')"
+GetSqlMultipleFilter/bs_end	"('path\\\\')"
+GetSqlMultipleFilter/dquote	"('say \\\"hi\\\"')"
+GetSqlMultipleFilter/empty	""
+GetSqlMultipleFilter/multi	"('A','N')"
+GetSqlMultipleFilter/newline	"('line1\\nline2')"
+GetSqlMultipleFilter/plain	"('สมชาย')"
+GetSqlMultipleFilter/quote	"('O\\'Brien')"
+GetSqlMultipleFilter/sentinel	"('ราคา u0026 ส่วนลด')"
+GetTimeHourFromSecond	"01:02"
+GetTimeHourFromSecond/zero	"00:00"
+GetTimeHourFromSecondNoBlank/zero	""
+Has/no	false
+Has/yes	true
+HasIncludes/hit	true
+HasRegexSpecialChars/no	false
+HasRegexSpecialChars/yes	true
+I32_S	"7"
+I64_S	"-42"
+I_S	"42"
+Includes/hit	true
+Includes/miss	false
+IsLetterOnly/no	true
+IsLetterOnly/yes	true
+IsOverlap/no	false
+IsOverlap/yes	true
+LastXChar/cut	"def"
+ListReverse	[{"code":"c","grp":"y","n":"1"},{"code":"a","grp":"x","n":"10"},{"code":"b","grp":"x","n":"2"}]
+ListSort/asc	[{"code":"a","grp":"x","n":"10"},{"code":"b","grp":"x","n":"2"},{"code":"c","grp":"y","n":"1"}]
+ListSort/desc	[{"code":"c","grp":"y","n":"1"},{"code":"b","grp":"x","n":"2"},{"code":"a","grp":"x","n":"10"}]
+ListSortNumber/asc	[{"code":"c","grp":"y","n":"1"},{"code":"b","grp":"x","n":"2"},{"code":"a","grp":"x","n":"10"}]
+ListToArrayOfArraySortByKey	[[{"code":"a","grp":"x","n":"10"},{"code":"b","grp":"x","n":"2"}],[{"code":"c","grp":"y","n":"1"}]]
+ListToMap/sample	{"a":{"code":"a","grp":"x","n":"10"},"b":{"code":"b","grp":"x","n":"2"},"c":{"code":"c","grp":"y","n":"1"}}
+ListToMapOfArray/sample	{"x":[{"code":"b","grp":"x","n":"2"},{"code":"a","grp":"x","n":"10"}],"y":[{"code":"c","grp":"y","n":"1"}]}
+M/missing	null
+MapOfArrayToList/sample	[{"code":"a","grp":"x","n":"10"},{"code":"b","grp":"x","n":"2"},{"code":"c","grp":"y","n":"1"}]
+MapToList/sample	[{"code":"a","grp":"x","n":"10"},{"code":"b","grp":"x","n":"2"},{"code":"c","grp":"y","n":"1"}]
+MapToString/emptyPassword	"{\"password\":\"\",\"username\":\"u\"}"
+MapToString/sample	"{\"code\":\"C001\",\"flag\":true,\"name\":\"บริษัท ทดสอบ\",\"none\":null,\"qty\":5,\"rate\":1.5}"
+MapToString/secrets	"{\"password\":\"***\",\"setup_password\":\"***\",\"username\":\"u\"}"
+MapVStr/default	"ค่าเริ่มต้น"
+Median/even	2.5
+Median/odd	2
+NObj/nested	"c"
+OC/false	"b"
+OC/true	"a"
+RawStringToPureASCII/thai	"บริษัท ABC#NL#\tx"
+Round/-2.500000	-3
+Round/0.000000	0
+Round/1.005000	1
+Round/1000000.000000	1000000
+Round/1234.567800	1235
+Round/2.500000	3
+RoundToInt64/-2.500000	-3
+RoundToInt64/0.000000	0
+RoundToInt64/1.005000	1
+RoundToInt64/1000000.000000	1000000
+RoundToInt64/1234.567800	1235
+RoundToInt64/2.500000	3
+RoundTrip.Compress.Extract/all	"All"
+RoundTrip.Compress.Extract/amp	"A & B"
+RoundTrip.Compress.Extract/attack	"x' or 1=1 --"
+RoundTrip.Compress.Extract/backslash	"C:\\new"
+RoundTrip.Compress.Extract/bs_end	"path\\"
+RoundTrip.Compress.Extract/dquote	"say \"hi\""
+RoundTrip.Compress.Extract/empty	""
+RoundTrip.Compress.Extract/multi	"A|N"
+RoundTrip.Compress.Extract/newline	"line1\nline2"
+RoundTrip.Compress.Extract/plain	"สมชาย"
+RoundTrip.Compress.Extract/quote	"O'Brien"
+RoundTrip.Compress.Extract/sentinel	"ราคา & ส่วนลด"
+RoundTrip.CompressArray.ExtractArray/all	[{"x":"All"}]
+RoundTrip.CompressArray.ExtractArray/amp	[{"x":"A \u0026 B"}]
+RoundTrip.CompressArray.ExtractArray/attack	[{"x":"x' or 1=1 --"}]
+RoundTrip.CompressArray.ExtractArray/backslash	[{"x":"C:\\new"}]
+RoundTrip.CompressArray.ExtractArray/bs_end	[{"x":"path\\"}]
+RoundTrip.CompressArray.ExtractArray/dquote	[{"x":"say \"hi\""}]
+RoundTrip.CompressArray.ExtractArray/empty	[{"x":""}]
+RoundTrip.CompressArray.ExtractArray/multi	[{"x":"A|N"}]
+RoundTrip.CompressArray.ExtractArray/newline	[{"x":"line1\nline2"}]
+RoundTrip.CompressArray.ExtractArray/plain	[{"x":"สมชาย"}]
+RoundTrip.CompressArray.ExtractArray/quote	[{"x":"O'Brien"}]
+RoundTrip.CompressArray.ExtractArray/sentinel	[{"x":"ราคา \u0026 ส่วนลด"}]
+SF64/number	1.5
+SI/float	0
+SI64/number	5
+S_F64/	0
+S_F64/ 5 	0
+S_F64/-3	-3
+S_F64/0	0
+S_F64/12	12
+S_F64/3.7	3.7
+S_F64/abc	0
+S_I/	0
+S_I/ 5 	0
+S_I/-3	-3
+S_I/0	0
+S_I/12	12
+S_I/3.7	0
+S_I/abc	0
+S_I32/	0
+S_I32/ 5 	0
+S_I32/-3	-3
+S_I32/0	0
+S_I32/12	12
+S_I32/3.7	0
+S_I32/abc	0
+S_I64/	0
+S_I64/ 5 	0
+S_I64/-3	-3
+S_I64/0	0
+S_I64/12	12
+S_I64/3.7	0
+S_I64/abc	0
+SortedListToArrayOfArray	[[{"code":"b","grp":"x","n":"2"},{"code":"a","grp":"x","n":"10"}],[{"code":"c","grp":"y","n":"1"}]]
+SqlStr/all	"All"
+SqlStr/amp	"A & B"
+SqlStr/attack	"x\\' or 1=1 --"
+SqlStr/backslash	"C:\\\\new"
+SqlStr/bs_end	"path\\\\"
+SqlStr/dquote	"say \\\"hi\\\""
+SqlStr/empty	""
+SqlStr/multi	"A|N"
+SqlStr/newline	"line1\\nline2"
+SqlStr/plain	"สมชาย"
+SqlStr/quote	"O\\'Brien"
+SqlStr/sentinel	"ราคา u0026 ส่วนลด"
+T/bool	"true"
+T/float	"1.5"
+T/missing	""
+T/nil	""
+T/number	"5"
+T/present	"C001"
+ToFixed/2/-2.500000	-2.5
+ToFixed/2/0.000000	0
+ToFixed/2/1.005000	1
+ToFixed/2/1000000.000000	1000000
+ToFixed/2/1234.567800	1234.57
+ToFixed/2/2.500000	2.5
+ToRFC3339	"2026-09-28T03:30:00Z"
+UncloseText/all	"All"
+UncloseText/amp	"A & B"
+UncloseText/attack	"x' or 1=1 --"
+UncloseText/backslash	"C:\\new"
+UncloseText/bs_end	"path\\"
+UncloseText/dquote	"say \"hi\""
+UncloseText/empty	""
+UncloseText/multi	"A|N"
+UncloseText/newline	"line1\nline2"
+UncloseText/plain	"สมชาย"
+UncloseText/quote	"O'Brien"
+UncloseText/sentinel	"ราคา & ส่วนลด"
+ZeroString/overflow	"567"
+ZeroString/pad	"000042"
