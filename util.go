@@ -65,12 +65,21 @@ func OC(condition bool, a string, b string) string {
   }
 }
 
+// FirstXChar — num ตัวอักษรแรก (นับเป็นตัวอักษร ไม่ใช่ไบต์)
+// เดิมตัดเป็นไบต์: ภาษาไทย 1 ตัว = 3 ไบต์ ถูกตัดกลางตัวแล้วขึ้น "��" (แก้ 2026-10-20)
+// ข้อความ ASCII ล้วน 1 ตัว = 1 ไบต์ → ผลเหมือนเดิมทุกไบต์ · คืนไบต์ของต้นฉบับ ไม่แปลงไบต์ที่ไม่ใช่ UTF-8
 func FirstXChar(str string, num int) string{
-	if len(str)-num >= 0 {
-		return str[:num]
-	}else{
-		return str
+	if num < 0 {
+		return str[:num] // คงพฤติกรรมเดิม: num ติดลบ = panic
 	}
+	n := 0
+	for i := range str {
+		if n == num {
+			return str[:i]
+		}
+		n++
+	}
+	return str
 }
 
 func LastXChar(str string, num int) string{
